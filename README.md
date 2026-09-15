@@ -127,6 +127,3 @@ Geradas em `outputs/analysis/`:
 - `per_line/` – sensibilidade, heatmaps, grids espaciais e melhores rotas
   de cada config.
 
-## Licença
-
-Uso acadêmico / de pesquisa.
