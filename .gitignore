@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Sistema / editores
+.DS_Store
+.idea/
+*.swp
+*~
+
+# Saidas pesadas (nao versionadas neste repositorio)
+outputs/routes/
+outputs/images/
+
+# Dados de entrada (nunca versionados)
+urbs_data*/
+*.parquet
