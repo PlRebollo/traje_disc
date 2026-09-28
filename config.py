@@ -1,12 +1,19 @@
 """
-Experimento v4 — Configuração.
+Configuração do modelo de reconstrução de rotas.
 
-Modelo de descoberta de rotas de ônibus a partir de dados GPS.
-Organização completa: código em core/, saídas em outputs/.
+Modelo final: segmentação por terminal e sem filtro direcional de dados.
+O trabalho caminha sobre a nuvem de pings e reconstrói a rota de cada
+sentido.
 
-Linhas testadas: 16 (4 circulares + 12 ida/volta).
-Fonte de dados: um dia completo de operação (2026-02-03), todas as linhas.
-Terminais extraídos automaticamente dos shapes oficiais.
+Dois pontos definem o experimento:
+
+  1) Fator de escala do raio em 10 valores: 1.1 a 2.0 (passos de 0.1);
+  2) O eixo de volume de dados é o NÚMERO DE VIAGENS (corridas completas de
+     sentido único, resultado da segmentação por terminal). Para cada
+     tamanho N, usam-se as N maiores viagens genuínas da linha (misturando
+     veículos quando necessário).
+
+Grid: 3 ângulos × 5 raios × 10 fatores × 9 tamanhos (1–500 viagens).
 """
 
 from pathlib import Path
@@ -14,75 +21,71 @@ from pathlib import Path
 # ============================================================
 # CAMINHOS
 # ============================================================
-BASE = Path(__file__).resolve().parent.parent
+BASE = Path(__file__).resolve().parent
+HERE = BASE
 
-PATH_POSITIONS = BASE / "urbs_data - cópia" / "2026_02_03_vehicle_positions.parquet"
-SHAPE_XZ_PATH = BASE / "urbs_data - cópia" / "2026_07_01_shapeLinha.json.xz"
+# Dados de entrada (não versionados; coloque os arquivos em data/)
+PATH_POSITIONS = BASE / "data" / "multiday_positions.parquet"
+SHAPE_XZ_PATH = BASE / "data" / "2026_07_01_shapeLinha.json.xz"
 
-OUT_ROOT = Path(__file__).resolve().parent / "outputs"
-ROUTES_DIR = OUT_ROOT / "routes"
+OUT_ROOT = HERE / "outputs"
+ROUTES_DIR = OUT_ROOT / "rotas"
 IMAGES_DIR = OUT_ROOT / "images"
 ANALYSIS_DIR = OUT_ROOT / "analysis"
 SUMMARY_CSV = OUT_ROOT / "experiment_summary.csv"
 
 # ============================================================
-# LINHAS (16)
-#   tipo "circular"  -> 1 shape  (start = shape start)
-#   tipo "ida_volta" -> 2 shapes (ida = shape[0], volta = shape[1])
-# Terminais extraídos dos shapes em tempo de execução.
+# LINHAS (13 — sem 545, 707, 924)
 # ============================================================
 LINHAS_CIRCULARES = ["020", "021", "022", "023"]
 LINHAS_IDA_VOLTA = [
-    "303", "203", "603", "338", "924", "658",
-    "506", "707", "505", "545", "307", "607",
+    "303", "203", "603", "338", "658",
+    "506", "505", "307", "607",
 ]
 LINHAS = LINHAS_CIRCULARES + LINHAS_IDA_VOLTA
 
 # ============================================================
 # FILTRO DE QUALIDADE DOS DADOS GPS
 # ============================================================
-MIN_TRIP_POINTS = 150          # mínimo de pings por viagem
-MAX_GAP_S = 900                # gap que separa viagens (15 min)
-MAX_SPEED_KMH = 120            # velocidade máxima plausível
-MIN_DT_S = 1                   # intervalo mínimo entre pings
+MIN_TRIP_POINTS = 150
+MAX_GAP_S = 900
+MAX_SPEED_KMH = 120
+MIN_DT_S = 1
 
 # ============================================================
-# GRID DE HIPERPARÂMETROS (expandido)
+# GRID DE HIPERPARÂMETROS
 # ============================================================
-BUS_COUNTS = [2, 5]            # circulares: nº de veículos amostrados
-SAMPLES_LIST = [90, 180, 360]  # amostras angulares N
-MIN_METERS_LIST = [5, 10, 20]  # raio mínimo r_min (m)
-MAX_METERS_LIST = [250]        # raio máximo r_max (m)
-INCREASE_METERS_LIST = [1.1, 1.25, 1.5, 2.0]  # taxa de crescimento G
+SAMPLES_LIST = [90, 180, 360]                    # 4°, 2°, 1°
+MIN_METERS_LIST = [5, 10, 15, 20, 25]            # raio mínimo (m)
+MAX_METERS_LIST = [250]                          # raio máximo (m)
+INCREASE_METERS_LIST = [1.1, 1.2, 1.3, 1.4, 1.5,
+                        1.6, 1.7, 1.8, 1.9, 2.0]  # fator de escala
+TRIP_COUNTS = [1, 2, 5, 10, 20, 50, 100, 200, 500]  # nº de viagens (dados)
 
 # ============================================================
 # MODELO
 # ============================================================
-ARRIVAL_RADIUS_M = 80.0        # raio de chegada ao destino B
-LOOP_CLOSE_RADIUS_M = 25.0     # raio de fechamento de loop (circular)
-LOOP_MIN_STEPS = 80            # mínimo de passos antes de fechar loop
-MAX_LENGTH_FACTOR = 2.5        # comprimento máx = 2.5 x distância reta A-B
-MAX_LENGTH_KM_CIRCULAR = 120.0
-CONSECUTIVE_FAIL_STOP = 10     # falhas consecutivas no raio máx -> para
-SMOOTH_ITERATIONS = 2          # Chaikin
+ARRIVAL_RADIUS_M = 80.0
+LOOP_CLOSE_RADIUS_M = 25.0
+LOOP_MIN_STEPS = 80
+CONSECUTIVE_FAIL_STOP = 10
+SMOOTH_ITERATIONS = 2
 
 # ============================================================
-# SELEÇÃO DE TRIPS
+# PIPELINE DE DADOS
 # ============================================================
-START_RADIUS_M = 2000.0        # trip genuína: parte a <= 2 km do terminal
-MAX_INPUT_POINTS = 60000       # limite de pontos de entrada (amostragem)
-TRIP_SHAPE_MAX_MEDIAN_M = 200.0  # validação: descarta trip cuja mediana
-                                 # de distância ao shape excede este valor
+START_RADIUS_M = 2000.0
+MAX_INPUT_POINTS = 60000
+TRIP_SHAPE_MAX_MEDIAN_M = 200.0
+
+# segmentação por terminal + SEM filtro direcional de dados
+SEGMENT_AT_TERMINALS = True
+PER_POINT_FILTER = False
 
 # ============================================================
-# MÉTRICA DE ADERÊNCIA
-#
-# Threshold = 15 m, justificado pela precisão horizontal 95% de
-# receptores GPS single-frequency em ambiente urbano:
-#   Kaplan & Hegarty (2017), "Understanding GPS/GNSS" — 10-15 m (95%)
-#   GPS SPS Performance Standard (DoD, 2020) — 7.8 m (sinal) + ruído
-# Aderência = % de pings dentro desta banda da rota reconstruída.
+# ADERÊNCIA (3 bandas)
 # ============================================================
+ADHERENCE_THRESHOLDS_M = (5.0, 10.0, 15.0)
 ADHERENCE_THRESHOLD_M = 15.0
 
 # ============================================================

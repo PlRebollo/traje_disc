@@ -12,10 +12,15 @@ env/
 *.swp
 *~
 
-# Saidas pesadas (nao versionadas neste repositorio)
-outputs/routes/
-outputs/images/
+# Saídas pesadas (não versionadas)
+outputs/rotas/
 
 # Dados de entrada (nunca versionados)
 urbs_data*/
+data/
 *.parquet
+
+# Temporários
+*.zip
+relatorio/
+documentacao/

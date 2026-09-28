@@ -25,10 +25,15 @@ from config import (
 # ============================================================
 # CARREGAMENTO E SEGMENTAÇÃO
 # ============================================================
-def load_gps_data(path, linhas=None) -> pl.DataFrame:
+def load_gps_data(path, linhas=None, split_terminals=None) -> pl.DataFrame:
     """
     Lê os pings GPS, filtra por qualidade (velocidade e intervalo) e
     segmenta em viagens (trip_id) por quebra de gap temporal.
+
+    split_terminals: mapa {linha: [(lon, lat), ...]} com os terminais da
+    linha. As viagens do dia inteiro do veículo (ida e volta mescladas,
+    pois a parada no terminal raramente passa de 15 min) são divididas em
+    cada chegada a terminal: a corrida volta a ter um único sentido.
     """
     df = pl.read_parquet(path)
     if linhas is not None:
@@ -76,6 +81,59 @@ def load_gps_data(path, linhas=None) -> pl.DataFrame:
            & (pl.col("speed_kmh") <= MAX_SPEED_KMH)
            & pl.col("speed_kmh").is_finite())
     )
+
+    # ------------------------------------------------------------
+    # ------------------------------------------------------------
+    # Re-segmentação por chegada a terminal (ida/volta): a viagem do dia
+    # inteiro do veículo (ida e volta mescladas, pois a parada no
+    # terminal raramente passa de 15 min) é cortada em cada chegada a
+    # terminal, de modo que cada segmento corresponda a uma corrida de
+    # sentido único.
+    # ------------------------------------------------------------
+    if split_terminals:
+        rows_t = []
+        for k_, pts_ in split_terminals.items():
+            for p in pts_:
+                rows_t.append({"linha": str(k_), "t_lon": float(p[0]),
+                               "t_lat": float(p[1])})
+        term = pl.DataFrame(rows_t)
+        alvo = [str(k_) for k_ in split_terminals.keys()]
+
+        idx = df.with_row_index("_rid")
+        j = (idx.filter(pl.col("linha").is_in(alvo))
+             .join(term, on="linha", how="inner"))
+        j = j.with_columns(
+            (
+                ((pl.col("lon") - pl.col("t_lon")) * M_PER_DEG_LAT
+                 * (pl.col("lat") * np.pi / 180).cos()) ** 2
+                + ((pl.col("lat") - pl.col("t_lat")) * M_PER_DEG_LAT) ** 2
+            ).sqrt().alias("d_t")
+        )
+        mind = j.group_by("_rid").agg(pl.col("d_t").min().alias("d_min"))
+        df = idx.join(mind, on="_rid", how="left").drop("_rid")
+        df = df.sort(["linha", "veiculo", "timestamp"])
+
+        df = df.with_columns([
+            (pl.col("d_min") < 300.0).alias("_near"),
+            (pl.col("d_min") > 1000.0)
+            .cum_max().over(["linha", "veiculo", "trip_id"]).alias("_far"),
+        ])
+        df = df.with_columns(
+            (
+                (pl.col("d_min") < 300.0)
+                & ~pl.col("_near").shift(1).over(["linha", "veiculo"])
+                .fill_null(False)
+                & pl.col("_far")
+            ).fill_null(False).alias("_split")
+        )
+        df = df.with_columns(
+            (pl.col("trip_id")
+             + pl.col("_split").cast(pl.Int64)
+             .cum_sum().over(["linha", "veiculo"])).alias("trip_id")
+        )
+        df = df.drop(["d_min", "_near", "_far", "_split"])
+        df = df.sort(["linha", "veiculo", "timestamp"])
+
     return df
 
 
@@ -193,13 +251,20 @@ def validate_trips(df_pl, sel, shape_models, linha, shape_id,
 
 
 def fetch_trip_points(df_pl, sel, start=None, end=None,
-                      per_point_filter=False, max_points=MAX_INPUT_POINTS):
+                      per_point_filter=False, max_points=MAX_INPUT_POINTS,
+                      zone_inner_m=None, zone_outer_m=None):
     """
     Retorna os pings das trips selecionadas com vetores de deslocamento
     (dx, dy) calculados dentro de cada trip.
 
     per_point_filter (ida/volta): mantém apenas pings cujo movimento
     local aponta no sentido do trajeto (v·(B-A) >= 0).
+
+    zona de terminal (zone_inner_m/zone_outer_m): quando definidos, os
+    pings a zone_inner_m..zone_outer_m metros do terminal de PARTIDA
+    escapam do filtro direcional — cobre rotas cuja perna de saída
+    segue em direção oposta ao destino (cabeça de linha em curva).
+    Fora do anel, o filtro direcional segue valendo.
     """
     if sel.empty:
         return pd.DataFrame(columns=["lon", "lat", "dx", "dy"])
@@ -228,7 +293,12 @@ def fetch_trip_points(df_pl, sel, start=None, end=None,
 
     if per_point_filter and end is not None:
         proj = pts["dx"] * (end[0] - start[0]) + pts["dy"] * (end[1] - start[1])
-        pts = pts[(proj >= 0) | proj.isna()]
+        keep = (proj >= 0) | proj.isna()
+        if zone_inner_m is not None and zone_outer_m is not None:
+            dA = np.sqrt((pts["lon"] - start[0]) ** 2
+                         + (pts["lat"] - start[1]) ** 2) * M_PER_DEG_LAT
+            keep |= (dA >= zone_inner_m) & (dA <= zone_outer_m)
+        pts = pts[keep]
 
     if len(pts) > max_points:
         pts = pts.sample(n=max_points, random_state=42)

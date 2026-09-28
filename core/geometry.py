@@ -62,8 +62,11 @@ def distance_matrix_to_polyline(points: pd.DataFrame, model: dict) -> np.ndarray
     px_col = px[:, None]
     py_col = py[:, None]
 
-    for start in range(0, m, SEGMENT_CHUNK):
-        end = min(start + SEGMENT_CHUNK, m)
+    # bloco dinâmico: limita a matriz a ~4M elementos (32 MB por array),
+    # evitando picos de memória quando há muitos pontos/segmentos
+    chunk = max(1, min(m, int(4_000_000 // max(n, 1))))
+    for start in range(0, m, chunk):
+        end = min(start + chunk, m)
         abx = (bx[start:end] - ax[start:end])[None, :]
         aby = (by[start:end] - ay[start:end])[None, :]
         ab2 = abx * abx + aby * aby

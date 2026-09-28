@@ -1,0 +1,625 @@
+==================================================================
+Experimento v8 — eixo de dados por Nº DE VIAGENS
+fator 1.1–2.0 (10 valores) · 13 linhas · sem filtro direcional
+==================================================================
+
+Carregando shapes...
+Shapes: 669 | configs: 22
+
+Carregando dados GPS multi-dia...
+Pings: 13,323,140 | trips válidas: 37,970
+
+Montando itens de trabalho (por nº de viagens)...
+  [0] 020/circular v1: 1/85 viagens | 1 veic | 6,446 pings
+  [1] 020/circular v2: 2/85 viagens | 2 veic | 12,212 pings
+  [2] 020/circular v5: 5/85 viagens | 5 veic | 29,053 pings
+  [3] 020/circular v10: 10/85 viagens | 10 veic | 56,132 pings
+  [4] 020/circular v20: 20/85 viagens | 20 veic | 59,769 pings
+  [5] 020/circular v50: 50/85 viagens | 50 veic | 59,813 pings
+  [6] 020/circular v100: 85/85 viagens | 85 veic | 59,782 pings
+  [7] 020/circular v200: 85/85 viagens | 85 veic | 59,782 pings
+  [8] 020/circular v500: 85/85 viagens | 85 veic | 59,782 pings
+  [9] 021/circular v1: 1/105 viagens | 1 veic | 5,855 pings
+  [10] 021/circular v2: 2/105 viagens | 2 veic | 11,233 pings
+  [11] 021/circular v5: 5/105 viagens | 5 veic | 27,158 pings
+  [12] 021/circular v10: 10/105 viagens | 10 veic | 53,019 pings
+  [13] 021/circular v20: 20/105 viagens | 20 veic | 59,800 pings
+  [14] 021/circular v50: 50/105 viagens | 50 veic | 59,795 pings
+  [15] 021/circular v100: 100/105 viagens | 100 veic | 59,813 pings
+  [16] 021/circular v200: 105/105 viagens | 105 veic | 59,803 pings
+  [17] 021/circular v500: 105/105 viagens | 105 veic | 59,803 pings
+  [18] 022/circular v1: 1/169 viagens | 1 veic | 5,057 pings
+  [19] 022/circular v2: 2/169 viagens | 2 veic | 10,030 pings
+  [20] 022/circular v5: 5/169 viagens | 5 veic | 22,829 pings
+  [21] 022/circular v10: 10/169 viagens | 10 veic | 43,706 pings
+  [22] 022/circular v20: 20/169 viagens | 20 veic | 59,754 pings
+  [23] 022/circular v50: 50/169 viagens | 50 veic | 59,735 pings
+  [24] 022/circular v100: 100/169 viagens | 100 veic | 59,773 pings
+  [25] 022/circular v200: 169/169 viagens | 169 veic | 59,755 pings
+  [26] 022/circular v500: 169/169 viagens | 169 veic | 59,755 pings
+  [27] 023/circular v1: 1/151 viagens | 1 veic | 4,998 pings
+  [28] 023/circular v2: 2/151 viagens | 2 veic | 9,356 pings
+  [29] 023/circular v5: 5/151 viagens | 5 veic | 21,854 pings
+  [30] 023/circular v10: 10/151 viagens | 10 veic | 42,335 pings
+  [31] 023/circular v20: 20/151 viagens | 20 veic | 59,782 pings
+  [32] 023/circular v50: 50/151 viagens | 50 veic | 59,781 pings
+  [33] 023/circular v100: 100/151 viagens | 100 veic | 59,758 pings
+  [34] 023/circular v200: 151/151 viagens | 151 veic | 59,786 pings
+  [35] 023/circular v500: 151/151 viagens | 151 veic | 59,786 pings
+[valida] 303/ida: 9 descartadas
+  [36] 303/ida v1: 1/3207 viagens | 1 veic | 457 pings
+  [37] 303/ida v2: 2/3207 viagens | 2 veic | 822 pings
+  [38] 303/ida v5: 5/3207 viagens | 2 veic | 1,892 pings
+  [39] 303/ida v10: 10/3207 viagens | 3 veic | 3,651 pings
+  [40] 303/ida v20: 20/3207 viagens | 5 veic | 7,095 pings
+  [41] 303/ida v50: 50/3207 viagens | 5 veic | 17,190 pings
+  [42] 303/ida v100: 100/3207 viagens | 6 veic | 33,327 pings
+  [43] 303/ida v200: 200/3207 viagens | 30 veic | 59,412 pings
+  [44] 303/ida v500: 500/3207 viagens | 66 veic | 59,575 pings
+[valida] 303/volta: 4 descartadas
+  [45] 303/volta v1: 1/3133 viagens | 1 veic | 457 pings
+  [46] 303/volta v2: 2/3133 viagens | 2 veic | 804 pings
+  [47] 303/volta v5: 5/3133 viagens | 3 veic | 1,837 pings
+  [48] 303/volta v10: 10/3133 viagens | 4 veic | 3,535 pings
+  [49] 303/volta v20: 20/3133 viagens | 4 veic | 6,872 pings
+  [50] 303/volta v50: 50/3133 viagens | 4 veic | 16,668 pings
+  [51] 303/volta v100: 100/3133 viagens | 4 veic | 32,320 pings
+  [52] 303/volta v200: 200/3133 viagens | 19 veic | 59,457 pings
+  [53] 303/volta v500: 500/3133 viagens | 72 veic | 59,563 pings
+[valida] 203/ida: 2 descartadas
+  [54] 203/ida v1: 1/3295 viagens | 1 veic | 486 pings
+  [55] 203/ida v2: 2/3295 viagens | 2 veic | 891 pings
+  [56] 203/ida v5: 5/3295 viagens | 5 veic | 2,006 pings
+  [57] 203/ida v10: 10/3295 viagens | 5 veic | 3,706 pings
+  [58] 203/ida v20: 20/3295 viagens | 7 veic | 6,987 pings
+  [59] 203/ida v50: 50/3295 viagens | 11 veic | 16,082 pings
+  [60] 203/ida v100: 100/3295 viagens | 25 veic | 29,883 pings
+  [61] 203/ida v200: 200/3295 viagens | 51 veic | 56,601 pings
+  [62] 203/ida v500: 500/3295 viagens | 71 veic | 59,694 pings
+  [63] 203/volta v1: 1/3258 viagens | 1 veic | 493 pings
+  [64] 203/volta v2: 2/3258 viagens | 2 veic | 932 pings
+  [65] 203/volta v5: 5/3258 viagens | 4 veic | 2,098 pings
+  [66] 203/volta v10: 10/3258 viagens | 6 veic | 3,755 pings
+  [67] 203/volta v20: 20/3258 viagens | 7 veic | 6,932 pings
+  [68] 203/volta v50: 50/3258 viagens | 16 veic | 15,893 pings
+  [69] 203/volta v100: 100/3258 viagens | 25 veic | 29,426 pings
+  [70] 203/volta v200: 200/3258 viagens | 34 veic | 55,568 pings
+  [71] 203/volta v500: 500/3258 viagens | 63 veic | 59,744 pings
+  [72] 603/ida v1: 1/1990 viagens | 1 veic | 218 pings
+  [73] 603/ida v2: 2/1990 viagens | 1 veic | 430 pings
+  [74] 603/ida v5: 5/1990 viagens | 1 veic | 1,053 pings
+  [75] 603/ida v10: 10/1990 viagens | 1 veic | 2,069 pings
+  [76] 603/ida v20: 20/1990 viagens | 2 veic | 4,053 pings
+  [77] 603/ida v50: 50/1990 viagens | 11 veic | 9,401 pings
+  [78] 603/ida v100: 100/1990 viagens | 27 veic | 17,795 pings
+  [79] 603/ida v200: 200/1990 viagens | 42 veic | 34,065 pings
+  [80] 603/ida v500: 500/1990 viagens | 56 veic | 59,203 pings
+[valida] 603/volta: 8 descartadas
+  [81] 603/volta v1: 1/2070 viagens | 1 veic | 277 pings
+  [82] 603/volta v2: 2/2070 viagens | 2 veic | 551 pings
+  [83] 603/volta v5: 5/2070 viagens | 4 veic | 1,345 pings
+  [84] 603/volta v10: 10/2070 viagens | 5 veic | 2,478 pings
+  [85] 603/volta v20: 20/2070 viagens | 5 veic | 4,537 pings
+  [86] 603/volta v50: 50/2070 viagens | 11 veic | 10,041 pings
+  [87] 603/volta v100: 100/2070 viagens | 29 veic | 18,531 pings
+  [88] 603/volta v200: 200/2070 viagens | 46 veic | 35,023 pings
+  [89] 603/volta v500: 500/2070 viagens | 57 veic | 59,376 pings
+[valida] 338/ida: 1 descartadas
+  [90] 338/ida v1: 1/1882 viagens | 1 veic | 395 pings
+  [91] 338/ida v2: 2/1882 viagens | 2 veic | 756 pings
+  [92] 338/ida v5: 5/1882 viagens | 5 veic | 1,493 pings
+  [93] 338/ida v10: 10/1882 viagens | 9 veic | 2,700 pings
+  [94] 338/ida v20: 20/1882 viagens | 16 veic | 5,085 pings
+  [95] 338/ida v50: 50/1882 viagens | 26 veic | 12,123 pings
+  [96] 338/ida v100: 100/1882 viagens | 44 veic | 23,612 pings
+  [97] 338/ida v200: 200/1882 viagens | 59 veic | 46,056 pings
+  [98] 338/ida v500: 500/1882 viagens | 75 veic | 59,187 pings
+[valida] 338/volta: 2 descartadas
+  [99] 338/volta v1: 1/1895 viagens | 1 veic | 252 pings
+  [100] 338/volta v2: 2/1895 viagens | 2 veic | 501 pings
+  [101] 338/volta v5: 5/1895 viagens | 5 veic | 1,243 pings
+  [102] 338/volta v10: 10/1895 viagens | 8 veic | 2,475 pings
+  [103] 338/volta v20: 20/1895 viagens | 15 veic | 4,908 pings
+  [104] 338/volta v50: 50/1895 viagens | 36 veic | 12,064 pings
+  [105] 338/volta v100: 100/1895 viagens | 50 veic | 23,777 pings
+  [106] 338/volta v200: 200/1895 viagens | 62 veic | 46,624 pings
+  [107] 338/volta v500: 500/1895 viagens | 75 veic | 59,192 pings
+[valida] 658/ida: 1 descartadas
+  [108] 658/ida v1: 1/1518 viagens | 1 veic | 343 pings
+  [109] 658/ida v2: 2/1518 viagens | 1 veic | 683 pings
+  [110] 658/ida v5: 5/1518 viagens | 1 veic | 1,699 pings
+  [111] 658/ida v10: 10/1518 viagens | 2 veic | 3,371 pings
+  [112] 658/ida v20: 20/1518 viagens | 2 veic | 6,667 pings
+  [113] 658/ida v50: 50/1518 viagens | 3 veic | 16,303 pings
+  [114] 658/ida v100: 100/1518 viagens | 4 veic | 31,853 pings
+  [115] 658/ida v200: 200/1518 viagens | 5 veic | 58,351 pings
+  [116] 658/ida v500: 500/1518 viagens | 15 veic | 58,347 pings
+[valida] 658/volta: 3 descartadas
+  [117] 658/volta v1: 1/1528 viagens | 1 veic | 348 pings
+  [118] 658/volta v2: 2/1528 viagens | 1 veic | 690 pings
+  [119] 658/volta v5: 5/1528 viagens | 2 veic | 1,694 pings
+  [120] 658/volta v10: 10/1528 viagens | 2 veic | 3,347 pings
+  [121] 658/volta v20: 20/1528 viagens | 4 veic | 6,610 pings
+  [122] 658/volta v50: 50/1528 viagens | 5 veic | 16,212 pings
+  [123] 658/volta v100: 100/1528 viagens | 5 veic | 31,706 pings
+  [124] 658/volta v200: 200/1528 viagens | 6 veic | 58,207 pings
+  [125] 658/volta v500: 500/1528 viagens | 21 veic | 58,424 pings
+[valida] 506/ida: 1 descartadas
+  [126] 506/ida v1: 1/1973 viagens | 1 veic | 303 pings
+  [127] 506/ida v2: 2/1973 viagens | 2 veic | 605 pings
+  [128] 506/ida v5: 5/1973 viagens | 4 veic | 1,408 pings
+  [129] 506/ida v10: 10/1973 viagens | 5 veic | 2,628 pings
+  [130] 506/ida v20: 20/1973 viagens | 6 veic | 4,943 pings
+  [131] 506/ida v50: 50/1973 viagens | 8 veic | 11,399 pings
+  [132] 506/ida v100: 100/1973 viagens | 14 veic | 21,554 pings
+  [133] 506/ida v200: 200/1973 viagens | 32 veic | 40,572 pings
+  [134] 506/ida v500: 500/1973 viagens | 52 veic | 59,294 pings
+  [135] 506/volta v1: 1/2035 viagens | 1 veic | 318 pings
+  [136] 506/volta v2: 2/2035 viagens | 2 veic | 616 pings
+  [137] 506/volta v5: 5/2035 viagens | 3 veic | 1,445 pings
+  [138] 506/volta v10: 10/2035 viagens | 4 veic | 2,704 pings
+  [139] 506/volta v20: 20/2035 viagens | 5 veic | 5,064 pings
+  [140] 506/volta v50: 50/2035 viagens | 6 veic | 11,585 pings
+  [141] 506/volta v100: 100/2035 viagens | 13 veic | 21,879 pings
+  [142] 506/volta v200: 200/2035 viagens | 33 veic | 41,254 pings
+  [143] 506/volta v500: 500/2035 viagens | 49 veic | 59,343 pings
+  [144] 505/ida v1: 1/1163 viagens | 1 veic | 372 pings
+  [145] 505/ida v2: 2/1163 viagens | 2 veic | 607 pings
+  [146] 505/ida v5: 5/1163 viagens | 4 veic | 1,293 pings
+  [147] 505/ida v10: 10/1163 viagens | 6 veic | 2,367 pings
+  [148] 505/ida v20: 20/1163 viagens | 9 veic | 4,439 pings
+  [149] 505/ida v50: 50/1163 viagens | 10 veic | 10,403 pings
+  [150] 505/ida v100: 100/1163 viagens | 10 veic | 19,913 pings
+  [151] 505/ida v200: 200/1163 viagens | 13 veic | 37,781 pings
+  [152] 505/ida v500: 500/1163 viagens | 58 veic | 59,204 pings
+  [153] 505/volta v1: 1/464 viagens | 1 veic | 249 pings
+  [154] 505/volta v2: 2/464 viagens | 2 veic | 497 pings
+  [155] 505/volta v5: 5/464 viagens | 3 veic | 1,238 pings
+  [156] 505/volta v10: 10/464 viagens | 4 veic | 2,383 pings
+  [157] 505/volta v20: 20/464 viagens | 8 veic | 4,359 pings
+  [158] 505/volta v50: 50/464 viagens | 11 veic | 9,878 pings
+  [159] 505/volta v100: 100/464 viagens | 13 veic | 18,471 pings
+  [160] 505/volta v200: 200/464 viagens | 27 veic | 34,582 pings
+  [161] 505/volta v500: 464/464 viagens | 64 veic | 58,711 pings
+[valida] 307/ida: 2 descartadas
+  [162] 307/ida v1: 1/1833 viagens | 1 veic | 264 pings
+  [163] 307/ida v2: 2/1833 viagens | 1 veic | 523 pings
+  [164] 307/ida v5: 5/1833 viagens | 2 veic | 1,290 pings
+  [165] 307/ida v10: 10/1833 viagens | 2 veic | 2,542 pings
+  [166] 307/ida v20: 20/1833 viagens | 3 veic | 4,950 pings
+  [167] 307/ida v50: 50/1833 viagens | 12 veic | 11,584 pings
+  [168] 307/ida v100: 100/1833 viagens | 28 veic | 21,915 pings
+  [169] 307/ida v200: 200/1833 viagens | 42 veic | 41,850 pings
+  [170] 307/ida v500: 500/1833 viagens | 58 veic | 59,536 pings
+[valida] 307/volta: 2 descartadas
+  [171] 307/volta v1: 1/1849 viagens | 1 veic | 277 pings
+  [172] 307/volta v2: 2/1849 viagens | 1 veic | 548 pings
+  [173] 307/volta v5: 5/1849 viagens | 1 veic | 1,346 pings
+  [174] 307/volta v10: 10/1849 viagens | 1 veic | 2,630 pings
+  [175] 307/volta v20: 20/1849 viagens | 4 veic | 5,105 pings
+  [176] 307/volta v50: 50/1849 viagens | 9 veic | 12,032 pings
+  [177] 307/volta v100: 100/1849 viagens | 30 veic | 22,692 pings
+  [178] 307/volta v200: 200/1849 viagens | 43 veic | 43,198 pings
+  [179] 307/volta v500: 500/1849 viagens | 58 veic | 59,457 pings
+  [180] 607/ida v1: 1/950 viagens | 1 veic | 536 pings
+  [181] 607/ida v2: 2/950 viagens | 2 veic | 922 pings
+  [182] 607/ida v5: 5/950 viagens | 2 veic | 2,032 pings
+  [183] 607/ida v10: 10/950 viagens | 3 veic | 3,770 pings
+  [184] 607/ida v20: 20/950 viagens | 9 veic | 7,117 pings
+  [185] 607/ida v50: 50/950 viagens | 21 veic | 16,782 pings
+  [186] 607/ida v100: 100/950 viagens | 29 veic | 32,428 pings
+  [187] 607/ida v200: 200/950 viagens | 35 veic | 59,756 pings
+  [188] 607/ida v500: 500/950 viagens | 39 veic | 59,717 pings
+  [189] 607/volta v1: 1/842 viagens | 1 veic | 379 pings
+  [190] 607/volta v2: 2/842 viagens | 1 veic | 751 pings
+  [191] 607/volta v5: 5/842 viagens | 1 veic | 1,847 pings
+  [192] 607/volta v10: 10/842 viagens | 1 veic | 3,570 pings
+  [193] 607/volta v20: 20/842 viagens | 6 veic | 6,849 pings
+  [194] 607/volta v50: 50/842 viagens | 23 veic | 16,125 pings
+  [195] 607/volta v100: 100/842 viagens | 26 veic | 31,167 pings
+  [196] 607/volta v200: 200/842 viagens | 33 veic | 59,736 pings
+  [197] 607/volta v500: 500/842 viagens | 38 veic | 59,726 pings
+Itens de trabalho: 198 | execuções: 29,700
+  [020_circular_v1] 150 execs | completas 82/150 | melhor cov15=9794%
+  [1/198] 4.1 min | ETA 799.5 min
+  [020_circular_v2] 150 execs | completas 145/150 | melhor cov15=9790%
+  [2/198] 9.4 min | ETA 918.5 min
+  [021_circular_v1] 150 execs | completas 111/150 | melhor cov15=9628%
+  [3/198] 12.5 min | ETA 815.3 min
+  [020_circular_v5] 150 execs | completas 150/150 | melhor cov15=9793%
+  [4/198] 19.8 min | ETA 959.7 min
+  [021_circular_v2] 150 execs | completas 141/150 | melhor cov15=9771%
+  [5/198] 20.2 min | ETA 779.6 min
+  [020_circular_v10] 150 execs | completas 72/150 | melhor cov15=9836%
+  [6/198] 22.9 min | ETA 733.5 min
+  [020_circular_v20] 150 execs | completas 94/150 | melhor cov15=9865%
+  [7/198] 23.4 min | ETA 639.4 min
+  [020_circular_v100] 150 execs | completas 149/150 | melhor cov15=9782%
+  [8/198] 24.1 min | ETA 573.2 min
+  [020_circular_v200] 150 execs | completas 149/150 | melhor cov15=9782%
+  [9/198] 24.2 min | ETA 507.9 min
+  [020_circular_v50] 150 execs | completas 150/150 | melhor cov15=9834%
+  [10/198] 24.2 min | ETA 455.1 min
+  [020_circular_v500] 150 execs | completas 149/150 | melhor cov15=9782%
+  [11/198] 28.2 min | ETA 478.6 min
+  [022_circular_v1] 150 execs | completas 114/150 | melhor cov15=9650%
+  [12/198] 30.5 min | ETA 472.1 min
+  [022_circular_v2] 150 execs | completas 141/150 | melhor cov15=9612%
+  [13/198] 36.2 min | ETA 515.6 min
+  [021_circular_v5] 150 execs | completas 148/150 | melhor cov15=9833%
+  [14/198] 37.4 min | ETA 491.3 min
+  [021_circular_v20] 150 execs | completas 70/150 | melhor cov15=9798%
+  [15/198] 39.6 min | ETA 483.5 min
+  [021_circular_v10] 150 execs | completas 147/150 | melhor cov15=9860%
+  [16/198] 41.6 min | ETA 473.2 min
+  [021_circular_v50] 150 execs | completas 146/150 | melhor cov15=9820%
+  [17/198] 46.3 min | ETA 492.8 min
+  [021_circular_v100] 150 execs | completas 144/150 | melhor cov15=9744%
+  [18/198] 47.2 min | ETA 472.1 min
+  [021_circular_v200] 150 execs | completas 139/150 | melhor cov15=9728%
+  [19/198] 47.5 min | ETA 447.3 min
+  [021_circular_v500] 150 execs | completas 139/150 | melhor cov15=9728%
+  [20/198] 47.5 min | ETA 422.6 min
+  [023_circular_v1] 150 execs | completas 1/150 | melhor cov15=9006%
+  [21/198] 49.0 min | ETA 412.8 min
+  [022_circular_v5] 150 execs | completas 146/150 | melhor cov15=9644%
+  [22/198] 51.3 min | ETA 410.1 min
+  [023_circular_v2] 150 execs | completas 101/150 | melhor cov15=8717%
+  [23/198] 54.6 min | ETA 415.5 min
+  [022_circular_v10] 150 execs | completas 146/150 | melhor cov15=9704%
+  [24/198] 56.1 min | ETA 407.1 min
+  [022_circular_v20] 150 execs | completas 147/150 | melhor cov15=9782%
+  [25/198] 60.3 min | ETA 417.4 min
+  [022_circular_v50] 150 execs | completas 150/150 | melhor cov15=9780%
+  [26/198] 62.3 min | ETA 412.4 min
+  [023_circular_v5] 150 execs | completas 145/150 | melhor cov15=9064%
+  [27/198] 65.0 min | ETA 411.6 min
+  [022_circular_v100] 150 execs | completas 150/150 | melhor cov15=9672%
+  [28/198] 67.3 min | ETA 408.3 min
+  [022_circular_v200] 150 execs | completas 128/150 | melhor cov15=9630%
+  [29/198] 68.2 min | ETA 397.5 min
+  [303_ida_v1] 150 execs | completas 0/150 | melhor cov15=4223%
+  [30/198] 68.3 min | ETA 382.2 min
+  [303_ida_v2] 150 execs | completas 1/150 | melhor cov15=6375%
+  [31/198] 68.3 min | ETA 368.1 min
+  [022_circular_v500] 150 execs | completas 128/150 | melhor cov15=9630%
+  [32/198] 68.6 min | ETA 355.6 min
+  [303_ida_v5] 150 execs | completas 20/150 | melhor cov15=8842%
+  [33/198] 68.6 min | ETA 342.9 min
+  [303_ida_v10] 150 execs | completas 67/150 | melhor cov15=9258%
+  [34/198] 69.5 min | ETA 335.2 min
+  [303_ida_v20] 150 execs | completas 63/150 | melhor cov15=9190%
+  [35/198] 70.7 min | ETA 329.0 min
+  [023_circular_v10] 150 execs | completas 150/150 | melhor cov15=9290%
+  [36/198] 72.7 min | ETA 327.1 min
+  [303_ida_v50] 150 execs | completas 91/150 | melhor cov15=9520%
+  [37/198] 76.0 min | ETA 330.5 min
+  [023_circular_v20] 150 execs | completas 144/150 | melhor cov15=9332%
+  [38/198] 76.6 min | ETA 322.6 min
+  [303_volta_v1] 150 execs | completas 13/150 | melhor cov15=3282%
+  [39/198] 76.7 min | ETA 312.5 min
+  [303_volta_v2] 150 execs | completas 4/150 | melhor cov15=7400%
+  [40/198] 76.8 min | ETA 303.3 min
+  [303_volta_v5] 150 execs | completas 45/150 | melhor cov15=8938%
+  [41/198] 77.2 min | ETA 295.7 min
+  [303_volta_v10] 150 execs | completas 67/150 | melhor cov15=9332%
+  [42/198] 78.1 min | ETA 290.0 min
+  [303_ida_v100] 150 execs | completas 108/150 | melhor cov15=9596%
+  [43/198] 79.3 min | ETA 285.8 min
+  [303_volta_v20] 150 execs | completas 48/150 | melhor cov15=9632%
+  [44/198] 79.6 min | ETA 278.8 min
+  [023_circular_v50] 150 execs | completas 150/150 | melhor cov15=9421%
+  [45/198] 80.0 min | ETA 271.9 min
+  [023_circular_v100] 150 execs | completas 140/150 | melhor cov15=9423%
+  [46/198] 82.2 min | ETA 271.5 min
+  [303_volta_v50] 150 execs | completas 43/150 | melhor cov15=9737%
+  [47/198] 83.0 min | ETA 266.6 min
+  [203_ida_v1] 150 execs | completas 0/150 | melhor cov15=514%
+  [48/198] 83.0 min | ETA 259.4 min
+  [203_ida_v2] 150 execs | completas 3/150 | melhor cov15=7957%
+  [49/198] 83.2 min | ETA 253.0 min
+  [203_ida_v5] 150 execs | completas 18/150 | melhor cov15=8769%
+  [50/198] 83.8 min | ETA 248.0 min
+  [303_ida_v200] 150 execs | completas 114/150 | melhor cov15=9372%
+  [51/198] 84.0 min | ETA 242.1 min
+  [203_ida_v10] 150 execs | completas 47/150 | melhor cov15=9498%
+  [52/198] 84.8 min | ETA 238.2 min
+  [023_circular_v200] 150 execs | completas 140/150 | melhor cov15=9333%
+  [53/198] 85.1 min | ETA 232.9 min
+  [303_volta_v100] 150 execs | completas 59/150 | melhor cov15=9860%
+  [54/198] 86.1 min | ETA 229.7 min
+  [203_ida_v20] 150 execs | completas 43/150 | melhor cov15=9469%
+  [55/198] 86.1 min | ETA 224.0 min
+  [023_circular_v500] 150 execs | completas 140/150 | melhor cov15=9333%
+  [56/198] 87.2 min | ETA 221.2 min
+  [203_volta_v1] 150 execs | completas 2/150 | melhor cov15=6045%
+  [57/198] 87.3 min | ETA 215.9 min
+  [203_volta_v2] 150 execs | completas 1/150 | melhor cov15=7586%
+  [58/198] 87.5 min | ETA 211.1 min
+  [203_volta_v5] 150 execs | completas 7/150 | melhor cov15=8751%
+  [59/198] 88.0 min | ETA 207.2 min
+  [303_ida_v500] 150 execs | completas 145/150 | melhor cov15=9256%
+  [60/198] 88.0 min | ETA 202.4 min
+  [203_volta_v10] 150 execs | completas 89/150 | melhor cov15=9095%
+  [61/198] 89.4 min | ETA 200.8 min
+  [203_volta_v20] 150 execs | completas 70/150 | melhor cov15=9452%
+  [62/198] 90.5 min | ETA 198.6 min
+  [203_ida_v50] 150 execs | completas 83/150 | melhor cov15=9313%
+  [63/198] 91.2 min | ETA 195.4 min
+  [303_volta_v200] 150 execs | completas 150/150 | melhor cov15=9332%
+  [64/198] 93.1 min | ETA 194.9 min
+  [203_ida_v100] 150 execs | completas 68/150 | melhor cov15=9170%
+  [65/198] 93.2 min | ETA 190.6 min
+  [603_ida_v1] 150 execs | completas 113/150 | melhor cov15=9862%
+  [66/198] 93.2 min | ETA 186.5 min
+  [603_ida_v2] 150 execs | completas 124/150 | melhor cov15=9907%
+  [67/198] 93.4 min | ETA 182.6 min
+  [603_ida_v5] 150 execs | completas 141/150 | melhor cov15=9829%
+  [68/198] 93.6 min | ETA 179.0 min
+  [603_ida_v10] 150 execs | completas 147/150 | melhor cov15=9812%
+  [69/198] 94.1 min | ETA 175.9 min
+  [303_volta_v500] 150 execs | completas 150/150 | melhor cov15=9415%
+  [70/198] 94.8 min | ETA 173.3 min
+  [603_ida_v20] 150 execs | completas 150/150 | melhor cov15=9664%
+  [71/198] 95.1 min | ETA 170.0 min
+  [203_volta_v50] 150 execs | completas 50/150 | melhor cov15=9317%
+  [72/198] 95.9 min | ETA 167.7 min
+  [203_ida_v200] 150 execs | completas 101/150 | melhor cov15=9133%
+  [73/198] 96.7 min | ETA 165.7 min
+  [603_ida_v50] 150 execs | completas 150/150 | melhor cov15=9386%
+  [74/198] 97.4 min | ETA 163.2 min
+  [603_volta_v1] 150 execs | completas 0/150 | melhor cov15=7473%
+  [75/198] 97.4 min | ETA 159.8 min
+  [603_volta_v2] 150 execs | completas 0/150 | melhor cov15=9002%
+  [76/198] 97.5 min | ETA 156.5 min
+  [203_ida_v500] 150 execs | completas 137/150 | melhor cov15=9336%
+  [77/198] 97.6 min | ETA 153.3 min
+  [603_volta_v5] 150 execs | completas 11/150 | melhor cov15=9145%
+  [78/198] 97.9 min | ETA 150.7 min
+  [603_volta_v10] 150 execs | completas 108/150 | melhor cov15=9366%
+  [79/198] 98.4 min | ETA 148.2 min
+  [603_volta_v20] 150 execs | completas 107/150 | melhor cov15=9508%
+  [80/198] 99.1 min | ETA 146.2 min
+  [603_ida_v100] 150 execs | completas 150/150 | melhor cov15=9437%
+  [81/198] 100.1 min | ETA 144.6 min
+  [203_volta_v100] 150 execs | completas 54/150 | melhor cov15=9100%
+  [82/198] 100.1 min | ETA 141.6 min
+  [603_volta_v50] 150 execs | completas 79/150 | melhor cov15=9231%
+  [83/198] 101.1 min | ETA 140.1 min
+  [338_ida_v1] 150 execs | completas 0/150 | melhor cov15=6127%
+  [84/198] 101.2 min | ETA 137.4 min
+  [338_ida_v2] 150 execs | completas 0/150 | melhor cov15=6772%
+  [85/198] 101.3 min | ETA 134.7 min
+  [338_ida_v5] 150 execs | completas 94/150 | melhor cov15=8600%
+  [86/198] 101.7 min | ETA 132.4 min
+  [603_ida_v200] 150 execs | completas 150/150 | melhor cov15=9576%
+  [87/198] 101.8 min | ETA 129.8 min
+  [338_ida_v10] 150 execs | completas 72/150 | melhor cov15=9485%
+  [88/198] 102.3 min | ETA 127.8 min
+  [338_ida_v20] 150 execs | completas 41/150 | melhor cov15=9797%
+  [89/198] 102.6 min | ETA 125.7 min
+  [203_volta_v200] 150 execs | completas 82/150 | melhor cov15=8864%
+  [90/198] 102.7 min | ETA 123.2 min
+  [603_ida_v500] 150 execs | completas 150/150 | melhor cov15=9669%
+  [91/198] 103.8 min | ETA 122.0 min
+  [203_volta_v500] 150 execs | completas 100/150 | melhor cov15=9031%
+  [92/198] 104.2 min | ETA 120.1 min
+  [338_volta_v1] 150 execs | completas 107/150 | melhor cov15=7976%
+  [93/198] 104.3 min | ETA 117.8 min
+  [338_volta_v2] 150 execs | completas 121/150 | melhor cov15=8703%
+  [94/198] 104.4 min | ETA 115.6 min
+  [603_volta_v100] 150 execs | completas 76/150 | melhor cov15=9263%
+  [95/198] 104.5 min | ETA 113.3 min
+  [338_volta_v5] 150 execs | completas 139/150 | melhor cov15=9405%
+  [96/198] 104.8 min | ETA 111.3 min
+  [338_volta_v10] 150 execs | completas 146/150 | melhor cov15=9923%
+  [97/198] 105.1 min | ETA 109.5 min
+  [338_ida_v50] 150 execs | completas 67/150 | melhor cov15=9943%
+  [98/198] 105.3 min | ETA 107.4 min
+  [338_volta_v20] 150 execs | completas 149/150 | melhor cov15=9976%
+  [99/198] 106.2 min | ETA 106.2 min
+  [603_volta_v200] 150 execs | completas 125/150 | melhor cov15=9428%
+  [100/198] 106.5 min | ETA 104.3 min
+  [603_volta_v500] 150 execs | completas 144/150 | melhor cov15=9620%
+  [101/198] 107.1 min | ETA 102.8 min
+  [658_ida_v1] 150 execs | completas 94/150 | melhor cov15=7026%
+  [102/198] 107.2 min | ETA 100.9 min
+  [658_ida_v2] 150 execs | completas 128/150 | melhor cov15=8389%
+  [103/198] 107.4 min | ETA 99.0 min
+  [658_ida_v5] 150 execs | completas 145/150 | melhor cov15=9276%
+  [104/198] 107.8 min | ETA 97.4 min
+  [338_ida_v100] 150 execs | completas 75/150 | melhor cov15=9956%
+  [105/198] 108.4 min | ETA 96.0 min
+  [658_ida_v10] 150 execs | completas 149/150 | melhor cov15=9552%
+  [106/198] 108.5 min | ETA 94.2 min
+  [338_volta_v50] 150 execs | completas 150/150 | melhor cov15=9993%
+  [107/198] 108.7 min | ETA 92.4 min
+  [658_ida_v20] 150 execs | completas 148/150 | melhor cov15=9715%
+  [108/198] 110.0 min | ETA 91.7 min
+  [338_ida_v200] 150 execs | completas 123/150 | melhor cov15=9975%
+  [109/198] 110.1 min | ETA 89.9 min
+  [338_volta_v100] 150 execs | completas 150/150 | melhor cov15=9982%
+  [110/198] 111.5 min | ETA 89.2 min
+  [658_volta_v1] 150 execs | completas 129/150 | melhor cov15=8247%
+  [111/198] 111.6 min | ETA 87.5 min
+  [338_ida_v500] 150 execs | completas 147/150 | melhor cov15=9969%
+  [112/198] 111.6 min | ETA 85.7 min
+  [658_volta_v2] 150 execs | completas 139/150 | melhor cov15=9159%
+  [113/198] 111.8 min | ETA 84.1 min
+  [658_volta_v5] 150 execs | completas 140/150 | melhor cov15=9451%
+  [114/198] 112.0 min | ETA 82.5 min
+  [658_volta_v10] 150 execs | completas 142/150 | melhor cov15=9749%
+  [115/198] 112.6 min | ETA 81.3 min
+  [658_ida_v50] 150 execs | completas 150/150 | melhor cov15=9714%
+  [116/198] 112.6 min | ETA 79.6 min
+  [338_volta_v200] 150 execs | completas 150/150 | melhor cov15=9988%
+  [117/198] 113.3 min | ETA 78.5 min
+  [658_volta_v20] 150 execs | completas 150/150 | melhor cov15=9846%
+  [118/198] 113.7 min | ETA 77.1 min
+  [338_volta_v500] 150 execs | completas 143/150 | melhor cov15=9979%
+  [119/198] 113.9 min | ETA 75.6 min
+  [506_ida_v1] 150 execs | completas 0/150 | melhor cov15=1749%
+  [120/198] 113.9 min | ETA 74.0 min
+  [506_ida_v2] 150 execs | completas 0/150 | melhor cov15=3339%
+  [121/198] 114.0 min | ETA 72.5 min
+  [506_ida_v5] 150 execs | completas 0/150 | melhor cov15=2521%
+  [122/198] 114.1 min | ETA 71.1 min
+  [658_ida_v100] 150 execs | completas 150/150 | melhor cov15=9710%
+  [123/198] 114.3 min | ETA 69.7 min
+  [506_ida_v10] 150 execs | completas 11/150 | melhor cov15=8257%
+  [124/198] 114.4 min | ETA 68.3 min
+  [506_ida_v20] 150 execs | completas 8/150 | melhor cov15=8875%
+  [125/198] 115.0 min | ETA 67.2 min
+  [658_ida_v200] 150 execs | completas 150/150 | melhor cov15=9706%
+  [126/198] 116.7 min | ETA 66.7 min
+  [658_volta_v50] 150 execs | completas 150/150 | melhor cov15=9919%
+  [127/198] 116.8 min | ETA 65.3 min
+  [658_ida_v500] 150 execs | completas 150/150 | melhor cov15=9714%
+  [128/198] 116.9 min | ETA 63.9 min
+  [506_volta_v1] 150 execs | completas 0/150 | melhor cov15=3459%
+  [129/198] 116.9 min | ETA 62.6 min
+  [506_volta_v2] 150 execs | completas 0/150 | melhor cov15=4042%
+  [130/198] 117.0 min | ETA 61.2 min
+  [506_ida_v50] 150 execs | completas 58/150 | melhor cov15=9242%
+  [131/198] 117.1 min | ETA 59.9 min
+  [506_volta_v5] 150 execs | completas 0/150 | melhor cov15=5841%
+  [132/198] 117.3 min | ETA 58.7 min
+  [506_volta_v10] 150 execs | completas 17/150 | melhor cov15=8554%
+  [133/198] 117.8 min | ETA 57.6 min
+  [506_volta_v20] 150 execs | completas 22/150 | melhor cov15=9094%
+  [134/198] 118.4 min | ETA 56.6 min
+  [658_volta_v100] 150 execs | completas 150/150 | melhor cov15=9922%
+  [135/198] 118.5 min | ETA 55.3 min
+  [658_volta_v200] 150 execs | completas 150/150 | melhor cov15=9950%
+  [136/198] 120.5 min | ETA 54.9 min
+  [658_volta_v500] 150 execs | completas 150/150 | melhor cov15=9946%
+  [137/198] 120.9 min | ETA 53.8 min
+  [505_ida_v1] 150 execs | completas 45/150 | melhor cov15=2769%
+  [138/198] 121.0 min | ETA 52.6 min
+  [505_ida_v2] 150 execs | completas 0/150 | melhor cov15=6310%
+  [139/198] 121.1 min | ETA 51.4 min
+  [506_ida_v100] 150 execs | completas 84/150 | melhor cov15=9340%
+  [140/198] 121.2 min | ETA 50.2 min
+  [505_ida_v5] 150 execs | completas 1/150 | melhor cov15=6659%
+  [141/198] 121.2 min | ETA 49.0 min
+  [506_volta_v50] 150 execs | completas 35/150 | melhor cov15=9519%
+  [142/198] 121.3 min | ETA 47.8 min
+  [505_ida_v10] 150 execs | completas 46/150 | melhor cov15=8107%
+  [143/198] 121.7 min | ETA 46.8 min
+  [505_ida_v20] 150 execs | completas 84/150 | melhor cov15=8594%
+  [144/198] 122.4 min | ETA 45.9 min
+  [505_ida_v50] 150 execs | completas 128/150 | melhor cov15=8883%
+  [145/198] 124.1 min | ETA 45.4 min
+  [506_volta_v100] 150 execs | completas 89/150 | melhor cov15=9576%
+  [146/198] 125.5 min | ETA 44.7 min
+  [505_volta_v1] 150 execs | completas 0/150 | melhor cov15=1004%
+  [147/198] 125.5 min | ETA 43.5 min
+  [505_volta_v2] 150 execs | completas 0/150 | melhor cov15=1529%
+  [148/198] 125.5 min | ETA 42.4 min
+  [505_volta_v5] 150 execs | completas 5/150 | melhor cov15=6034%
+  [149/198] 125.6 min | ETA 41.3 min
+  [506_ida_v200] 150 execs | completas 140/150 | melhor cov15=9357%
+  [150/198] 125.7 min | ETA 40.2 min
+  [505_volta_v10] 150 execs | completas 11/150 | melhor cov15=7629%
+  [151/198] 125.9 min | ETA 39.2 min
+  [505_volta_v20] 150 execs | completas 36/150 | melhor cov15=8683%
+  [152/198] 126.6 min | ETA 38.3 min
+  [506_ida_v500] 150 execs | completas 148/150 | melhor cov15=9410%
+  [153/198] 126.9 min | ETA 37.3 min
+  [506_volta_v200] 150 execs | completas 108/150 | melhor cov15=9656%
+  [154/198] 127.4 min | ETA 36.4 min
+  [505_ida_v100] 150 execs | completas 142/150 | melhor cov15=8998%
+  [155/198] 127.5 min | ETA 35.4 min
+  [307_ida_v1] 150 execs | completas 17/150 | melhor cov15=5568%
+  [156/198] 127.6 min | ETA 34.3 min
+  [307_ida_v2] 150 execs | completas 3/150 | melhor cov15=6272%
+  [157/198] 127.6 min | ETA 33.3 min
+  [307_ida_v5] 150 execs | completas 98/150 | melhor cov15=8620%
+  [158/198] 127.9 min | ETA 32.4 min
+  [505_volta_v50] 150 execs | completas 49/150 | melhor cov15=9340%
+  [159/198] 128.1 min | ETA 31.4 min
+  [307_ida_v10] 150 execs | completas 135/150 | melhor cov15=9072%
+  [160/198] 128.6 min | ETA 30.5 min
+  [505_ida_v200] 150 execs | completas 150/150 | melhor cov15=8994%
+  [161/198] 129.2 min | ETA 29.7 min
+  [307_ida_v20] 150 execs | completas 144/150 | melhor cov15=9396%
+  [162/198] 129.5 min | ETA 28.8 min
+  [506_volta_v500] 150 execs | completas 141/150 | melhor cov15=9728%
+  [163/198] 130.8 min | ETA 28.1 min
+  [505_volta_v100] 150 execs | completas 63/150 | melhor cov15=9679%
+  [164/198] 130.9 min | ETA 27.1 min
+  [307_volta_v1] 150 execs | completas 2/150 | melhor cov15=6498%
+  [165/198] 131.0 min | ETA 26.2 min
+  [307_volta_v2] 150 execs | completas 9/150 | melhor cov15=7956%
+  [166/198] 131.1 min | ETA 25.3 min
+  [307_volta_v5] 150 execs | completas 47/150 | melhor cov15=9421%
+  [167/198] 131.4 min | ETA 24.4 min
+  [505_ida_v500] 150 execs | completas 150/150 | melhor cov15=8984%
+  [168/198] 131.7 min | ETA 23.5 min
+  [307_volta_v10] 150 execs | completas 70/150 | melhor cov15=9726%
+  [169/198] 132.2 min | ETA 22.7 min
+  [307_ida_v50] 150 execs | completas 145/150 | melhor cov15=9387%
+  [170/198] 132.6 min | ETA 21.8 min
+  [307_volta_v20] 150 execs | completas 78/150 | melhor cov15=9841%
+  [171/198] 133.4 min | ETA 21.1 min
+  [505_volta_v200] 150 execs | completas 111/150 | melhor cov15=9695%
+  [172/198] 133.8 min | ETA 20.2 min
+  [505_volta_v500] 150 execs | completas 134/150 | melhor cov15=9758%
+  [173/198] 136.0 min | ETA 19.6 min
+  [607_ida_v1] 150 execs | completas 0/150 | melhor cov15=1511%
+  [174/198] 136.0 min | ETA 18.8 min
+  [607_ida_v2] 150 execs | completas 0/150 | melhor cov15=2126%
+  [175/198] 136.1 min | ETA 17.9 min
+  [607_ida_v5] 150 execs | completas 0/150 | melhor cov15=3243%
+  [176/198] 136.4 min | ETA 17.0 min
+  [307_volta_v50] 150 execs | completas 149/150 | melhor cov15=9858%
+  [177/198] 136.7 min | ETA 16.2 min
+  [607_ida_v10] 150 execs | completas 53/150 | melhor cov15=8117%
+  [178/198] 137.3 min | ETA 15.4 min
+  [307_ida_v100] 150 execs | completas 146/150 | melhor cov15=9076%
+  [179/198] 137.3 min | ETA 14.6 min
+  [307_ida_v200] 150 execs | completas 149/150 | melhor cov15=9002%
+  [180/198] 139.3 min | ETA 13.9 min
+  [607_ida_v20] 150 execs | completas 73/150 | melhor cov15=8256%
+  [181/198] 139.6 min | ETA 13.1 min
+  [307_volta_v100] 150 execs | completas 150/150 | melhor cov15=9760%
+  [182/198] 141.3 min | ETA 12.4 min
+  [607_volta_v1] 150 execs | completas 16/150 | melhor cov15=6675%
+  [183/198] 141.3 min | ETA 11.6 min
+  [607_volta_v2] 150 execs | completas 42/150 | melhor cov15=6791%
+  [184/198] 141.5 min | ETA 10.8 min
+  [307_ida_v500] 150 execs | completas 148/150 | melhor cov15=9218%
+  [185/198] 141.7 min | ETA 10.0 min
+  [607_volta_v5] 150 execs | completas 127/150 | melhor cov15=7445%
+  [186/198] 142.1 min | ETA 9.2 min
+  [607_volta_v10] 150 execs | completas 142/150 | melhor cov15=8020%
+  [187/198] 142.9 min | ETA 8.4 min
+  [307_volta_v200] 150 execs | completas 150/150 | melhor cov15=9780%
+  [188/198] 143.4 min | ETA 7.6 min
+  [307_volta_v500] 150 execs | completas 150/150 | melhor cov15=9831%
+  [189/198] 144.7 min | ETA 6.9 min
+  [607_volta_v20] 150 execs | completas 148/150 | melhor cov15=8127%
+  [190/198] 145.0 min | ETA 6.1 min
+  [607_ida_v50] 150 execs | completas 139/150 | melhor cov15=8348%
+  [191/198] 146.5 min | ETA 5.4 min
+  [607_ida_v100] 150 execs | completas 149/150 | melhor cov15=8258%
+  [192/198] 150.2 min | ETA 4.7 min
+  [607_volta_v50] 150 execs | completas 150/150 | melhor cov15=8012%
+  [193/198] 150.7 min | ETA 3.9 min
+  [607_ida_v500] 150 execs | completas 138/150 | melhor cov15=8099%
+  [194/198] 152.4 min | ETA 3.1 min
+  [607_ida_v200] 150 execs | completas 149/150 | melhor cov15=8212%
+  [195/198] 152.7 min | ETA 2.3 min
+  [607_volta_v100] 150 execs | completas 150/150 | melhor cov15=8000%
+  [196/198] 153.1 min | ETA 1.6 min
+  [607_volta_v200] 150 execs | completas 150/150 | melhor cov15=8126%
+  [197/198] 154.4 min | ETA 0.8 min
+  [607_volta_v500] 150 execs | completas 150/150 | melhor cov15=8142%
+  [198/198] 154.4 min | ETA 0.0 min
+
+==================================================================
+Concluído: 29,700 execuções em 154.5 min
+Completas: 18,774 (63.2%)
+Sumário: /Users/pedrorebollo/projetos/traje_disc/experimento_v9_sem_limite/outputs/experiment_summary.csv
+Rotas:   /Users/pedrorebollo/projetos/traje_disc/experimento_v9_sem_limite/outputs/rotas (parquet, uma por item)
+==================================================================

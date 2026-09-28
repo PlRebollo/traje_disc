@@ -3,12 +3,14 @@ Modelo de descoberta de rota (caminhada gulosa guiada por destino).
 
 Ideia: caminhar por uma nuvem de pontos GPS escolhendo, a cada passo, o
 candidato mais apoiado pelos dados. A pontuação de cada candidato combina
-densidade direcional (pontos que se movem na direção do candidato) e uma
-guia proporcional ao progresso em direção ao destino.
+densidade (pontos próximos) e uma guia proporcional ao progresso em direção
+ao destino. O cosseno do deslocamento do ponto NÃO pondera o score: serve
+apenas de filtro direcional.
 
 Mudanças em relação ao modelo original:
-1. Pontuação direcional: cada ponto GPS só pontua candidatos alinhados ao
-   seu próprio vetor de deslocamento (evita recuo por depleção de densidade).
+1. Filtro direcional: cada ponto GPS só pontua candidatos alinhados ao seu
+   próprio vetor de deslocamento (cos > 0); o valor do cosseno NÃO é usado
+   como peso (aplica-se 1/d puro). Evita recuo e não zera candidatos curvos.
 2. Guia ao destino g_i = 1 + progresso * max(0, cos(alinhamento)),
    sem constantes arbitrárias; progresso = fração do eixo A->B já percorrida.
 3. Direção inicial: vetor resultante dos deslocamentos de TODOS os pontos
@@ -18,6 +20,8 @@ Mudanças em relação ao modelo original:
 6. Otimização exata: pré-filtro por desigualdade triangular (só pontos a
    distância <= 2r podem pontuar algum candidato).
 """
+
+import math
 
 import numpy as np
 import pandas as pd
@@ -67,18 +71,48 @@ def _discover_core(
     loop_close_radius: float,
     loop_min_steps: int,
     arrival_radius_m: float,
-    max_length_km: float,
     consecutive_fail_stop: int,
     verbose: bool,
+    no_revisit: bool = False,
+    revisit_penalty: float = 0.0,
+    revisit_lookback: int = 4,
+    max_turn_deg: float = 180.0,
+    turn_penalty: float = 0.0,
+    turn_lookback: int = 3,
+    turn_max_steps: int = None,
+    min_step_factor: float = 1.0,
+    guide_scale: float = 1.0,
+    init_dir_radius_m: float = None,
+    initial_dir=None,
+    heading_filter: bool = False,
+    heading_lookback: int = 3,
+    heading_seed_init: bool = False,
+    heading_min_cos_deg: float = 90.0,
+    init_cone_deg: float = 90.0,
+    init_cone_steps: int = 2,
 ):
     """
     Executa a caminhada. Retorna (lons, lats, dist_meters, info).
 
     Componentes do score de cada candidato i:
-      w(p,i) = max(0, cos(ângulo entre o deslocamento do ponto p e a
-                          direção do candidato i))
-      S_i    = [ Σ_p w(p,i)/d(p,C_i) ] · g_i
+      v_p    = deslocamento do ponto p
+      û_i    = direção do candidato i
+      S_i    = [ Σ_{p : cos(v_p,û_i) > 0} 1/d(p,C_i) ] · g_i
       g_i    = 1 + progresso(P) · max(0, cos(ângulo(C_i, P->B)))
+
+    O cosseno cos(v_p,û_i) atua apenas como filtro (descarta pontos que se
+    movem no sentido oposto); NÃO multiplica o termo 1/d.
+
+    Melhorias opcionais (default desligado = comportamento baseline):
+      no_revisit     : penaliza candidatos que voltam a uma região já
+                       percorrida há mais de `revisit_lookback` passos
+                       (evita oscilação/travamento no terminal).
+      max_turn_deg   : penaliza candidatos que invertem o rumo em relação
+                       à média dos últimos `turn_lookback` passos
+                       (suaviza o caminho, evita zigzag).
+      turn_max_steps : se definido, a penalidade de rumo só vale para os
+                       primeiros `turn_max_steps` passos (foco no terminal,
+                       sem alterar o meio do trajeto).
     """
     # vetores de deslocamento por ponto (dentro de cada trip)
     if "dx" in df.columns and "dy" in df.columns:
@@ -95,7 +129,6 @@ def _discover_core(
     max_meters_rad = max_meters / M_PER_DEG_LAT
     loop_close_rad = loop_close_radius / M_PER_DEG_LAT
     arrival_rad = arrival_radius_m / M_PER_DEG_LAT
-    max_length_rad = (max_length_km * 1000.0) / M_PER_DEG_LAT
 
     start = np.array(initial_point, dtype=float)
     pos = start.copy()
@@ -110,6 +143,14 @@ def _discover_core(
 
     route_lons, route_lats, dist_meters = [], [], []
     cumulative = 0.0
+
+    # memória anti-revisita e de rumo (melhorias opcionais)
+    cell_size = max(meters_min_rad * min_step_factor, 1e-9)
+    cell_last = {}
+    step_hist = []
+    heading = None
+    h_hist = []
+    heading_h = None
 
     angles = np.linspace(0, 2 * np.pi, angular_samples, endpoint=False)
     cos_a = np.cos(angles)
@@ -145,7 +186,9 @@ def _discover_core(
     init_dir = None
     if len(w_lon) >= 3:
         d_start = np.sqrt((w_lon - start[0]) ** 2 + (w_lat - start[1]) ** 2)
-        idx_near = np.where(d_start <= meters_min_rad)[0]
+        init_rad = (meters_min_rad if init_dir_radius_m is None
+                    else init_dir_radius_m / M_PER_DEG_LAT)
+        idx_near = np.where(d_start <= init_rad)[0]
         if len(idx_near) >= 3:
             vlon = w_dlon[idx_near]
             vlat = w_dlat[idx_near]
@@ -156,6 +199,16 @@ def _discover_core(
                 norm = np.sqrt(sx ** 2 + sy ** 2)
                 if norm > 0:
                     init_dir = np.array([sx / norm, sy / norm])
+
+    # semente do filtro dinâmico: a direção inicial serve de rumo no
+    # primeiro passo, antes de qualquer passo aceito existir
+    if initial_dir is not None:
+        iv = np.asarray(initial_dir, dtype=float)
+        ivn = float(np.hypot(iv[0], iv[1]))
+        if ivn > 0:
+            init_dir = iv / ivn
+    if heading_filter and heading_seed_init and init_dir is not None:
+        heading_h = init_dir.copy()
 
     while (n < iterations) and (meters_rad <= max_meters_rad):
         n += 1
@@ -176,14 +229,15 @@ def _discover_core(
                 float(np.clip(np.dot(pos - start, axis) / axis_norm2, 0.0, 1.0))
                 if axis_norm2 > 0 else 0.0
             )
-            guide = 1.0 + progress * np.maximum(align, 0.0)
+            guide = 1.0 + guide_scale * progress * np.maximum(align, 0.0)
         else:
             guide = np.ones(angular_samples)
 
-        # primeiros passos: restringe à direção inicial estimada
-        if len(route_lons) < 2 and init_dir is not None:
+        # primeiros passos: restringe à direção inicial estimada (cone)
+        if len(route_lons) < init_cone_steps and init_dir is not None:
             align_init = cos_a * init_dir[0] + sin_a * init_dir[1]
-            guide = guide * np.where(align_init > 0, 1.0, 0.0)
+            lim = math.cos(math.radians(init_cone_deg))
+            guide = guide * np.where(align_init > lim, 1.0, 0.0)
 
         if len(w_lon) == 0:
             info["stop_reason"] = "sem_pontos_ativos"
@@ -202,27 +256,77 @@ def _discover_core(
             ndl, ndt = w_dlon[near], w_dlat[near]
             nns = w_norm_safe[near]
 
-            for i in range(angular_samples):
-                dist2 = np.sqrt((nl - cand_lon[i]) ** 2 + (nlt - cand_lat[i]) ** 2)
-                mask = dist2 <= meters_rad
-                if not np.any(mask):
-                    continue
+            # compatibilidade do deslocamento do ponto com o rumo atual da
+            # caminhada (filtro dinâmico: pontos contra o rumo NÃO contam
+            # neste passo, mas permanecem na nuvem — não são apagados)
+            ch_vec = None
+            if heading_filter and heading_h is not None:
+                with np.errstate(invalid="ignore", divide="ignore"):
+                    ch_vec = (ndl * heading_h[0] + ndt * heading_h[1]) / nns
+                np.nan_to_num(ch_vec, copy=False, nan=0.0, posinf=0.0,
+                              neginf=0.0)
 
-                dot = ndl * cos_a[i] + ndt * sin_a[i]
+            # Avaliação vetorizada: distância e cosseno de cada ponto para
+            # cada candidato. Processa os candidatos em blocos para limitar
+            # o pico de memória (matrizes n_pontos x bloco).
+            n_pts = len(near)
+            block = max(1, int(2_000_000 // max(n_pts, 1)))
+            for c0 in range(0, angular_samples, block):
+                c1 = min(c0 + block, angular_samples)
+                sl = slice(c0, c1)
+                ca_cos, ca_sin = cos_a[sl], sin_a[sl]
+                clon, clat = cand_lon[sl], cand_lat[sl]
+
+                dlon = nl[:, None] - clon[None, :]
+                dlat = nlt[:, None] - clat[None, :]
                 with np.errstate(invalid="ignore"):
-                    dir_w = np.maximum(dot / nns, 0.0)
-                dir_w = np.nan_to_num(dir_w, nan=0.0, posinf=0.0, neginf=0.0)
+                    dist = np.sqrt(dlon * dlon + dlat * dlat)
+                mask = dist <= meters_rad
 
-                w = mask & (dir_w > 0)
-                if not np.any(w):
-                    continue
+                with np.errstate(invalid="ignore", divide="ignore"):
+                    cos_dir = (ndl[:, None] * ca_cos[None, :]
+                               + ndt[:, None] * ca_sin[None, :]) / nns[:, None]
+                np.nan_to_num(cos_dir, copy=False, nan=0.0, posinf=0.0,
+                              neginf=0.0)
 
-                density = float(np.sum(dir_w[w] / dist2[w]))
-                score = density * guide[i]
-                if score > best_score:
-                    best_score = score
-                    best_point = (cand_lon[i], cand_lat[i])
-                    best_captured = near[w]
+                # filtro direcional: descarta pontos que se movem contra o
+                # sentido do caminho (cos < 0). Não pondera pelo cosseno.
+                w = mask & (cos_dir > 0.0)
+                if heading_filter and ch_vec is not None:
+                    lim_h = math.cos(math.radians(heading_min_cos_deg))
+                    w = w & (ch_vec[:, None] > lim_h)
+
+                inv = np.zeros_like(dist)
+                np.divide(1.0, dist, out=inv, where=w)
+                density = inv.sum(axis=0)
+                scores = density * guide[sl]
+                np.nan_to_num(scores, copy=False, nan=0.0, posinf=0.0,
+                              neginf=0.0)
+
+                # --- melhoria 1: penaliza revisita a regiao ja percorrida ---
+                if no_revisit and cell_last:
+                    inv_cell = 1.0 / cell_size
+                    for j in range(len(scores)):
+                        cj = (int(round(float(clon[j]) * inv_cell)),
+                              int(round(float(clat[j]) * inv_cell)))
+                        last = cell_last.get(cj)
+                        if last is not None and (n - last) > revisit_lookback:
+                            scores[j] *= revisit_penalty
+
+                # --- melhoria 2: penaliza inversao brusca de rumo ---
+                if (heading is not None and turn_penalty < 1.0
+                        and (turn_max_steps is None or n <= turn_max_steps)):
+                    ht = math.cos(math.radians(max_turn_deg))
+                    dots = ca_cos * heading[0] + ca_sin * heading[1]
+                    scores[dots < ht] *= turn_penalty
+
+                local_i = int(np.argmax(scores))
+                local_score = float(scores[local_i])
+                if local_score > best_score:
+                    best_score = local_score
+                    best_point = (cand_lon[c0 + local_i],
+                                  cand_lat[c0 + local_i])
+                    best_captured = near[w[:, local_i]]
 
         if best_score <= 0:
             meters_rad *= increase_meters
@@ -246,7 +350,32 @@ def _discover_core(
         w_dlon, w_dlat = w_dlon[keep], w_dlat[keep]
         w_norm_safe = w_norm_safe[keep]
 
+        prev_pos = pos
         pos = np.array(best_point)
+
+        # atualiza memória anti-revisita (célula = tamanho do raio mínimo)
+        cj = (int(round(float(pos[0]) / cell_size)),
+              int(round(float(pos[1]) / cell_size)))
+        cell_last[cj] = n
+
+        # atualiza rumo recente (média dos últimos passos)
+        step_hist.append(pos - prev_pos)
+        if len(step_hist) > turn_lookback:
+            step_hist.pop(0)
+        svec = np.sum(step_hist, axis=0)
+        nv = float(np.hypot(svec[0], svec[1]))
+        if nv > 0:
+            heading = svec / nv
+
+        # rumo usado pelo filtro dinâmico (independente do turn_lookback)
+        h_hist.append(pos - prev_pos)
+        if len(h_hist) > heading_lookback:
+            h_hist.pop(0)
+        hsv = np.sum(h_hist, axis=0)
+        nhv = float(np.hypot(hsv[0], hsv[1]))
+        if nhv > 0:
+            heading_h = hsv / nhv
+
         meters_rad = max(meters_min_rad, meters_rad * decrease_meters)
 
         # ---------------- critérios de parada ----------------
@@ -262,10 +391,6 @@ def _discover_core(
                 info["closed_loop"] = True
                 info["stop_reason"] = "loop_fechado"
                 break
-
-        if cumulative >= max_length_rad:
-            info["stop_reason"] = "limite_comprimento"
-            break
 
     if verbose:
         print(f"\n  parada: {info['stop_reason']} | passos={info['n_steps']}")
@@ -286,12 +411,27 @@ def discover_route(
     loop_close_radius: float = 25.0,
     loop_min_steps: int = 80,
     arrival_radius_m: float = 80.0,
-    max_length_factor: float = 2.5,
-    max_length_km_circular: float = 120.0,
     consecutive_fail_stop: int = 10,
     smooth_iterations: int = 2,
     retry_relaxed: bool = True,
     verbose: bool = False,
+    no_revisit: bool = False,
+    revisit_penalty: float = 0.0,
+    revisit_lookback: int = 4,
+    max_turn_deg: float = 180.0,
+    turn_penalty: float = 0.0,
+    turn_lookback: int = 3,
+    turn_max_steps: int = None,
+    min_step_factor: float = 1.0,
+    guide_scale: float = 1.0,
+    init_dir_radius_m: float = None,
+    initial_dir=None,
+    heading_filter: bool = False,
+    heading_lookback: int = 3,
+    heading_seed_init: bool = False,
+    heading_min_cos_deg: float = 90.0,
+    init_cone_deg: float = 90.0,
+    init_cone_steps: int = 2,
 ):
     """
     Descobre a rota entre initial_point e end_point (ou loop circular se
@@ -299,15 +439,11 @@ def discover_route(
 
     Re-tenta com parâmetros relaxados se a rota ficar muito curta, e
     aplica suavização Chaikin no final.
+
+    Melhorias opcionais (ver _discover_core): no_revisit / max_turn_deg.
     """
     if decrease_meters is None:
         decrease_meters = 1.0 / increase_meters
-
-    if end_point is not None:
-        straight = route_length_km(_two_points(initial_point, end_point))
-        max_length_km = max(max_length_factor * straight, 5.0)
-    else:
-        max_length_km = max_length_km_circular
 
     def run(m, ams, inc, dec, mmax, fail_stop):
         return _discover_core(
@@ -315,8 +451,19 @@ def discover_route(
             meters=m, angular_samples=ams, iterations=iterations,
             increase_meters=inc, decrease_meters=dec, max_meters=mmax,
             loop_close_radius=loop_close_radius, loop_min_steps=loop_min_steps,
-            arrival_radius_m=arrival_radius_m, max_length_km=max_length_km,
+            arrival_radius_m=arrival_radius_m,
             consecutive_fail_stop=fail_stop, verbose=verbose,
+            no_revisit=no_revisit, revisit_penalty=revisit_penalty,
+            revisit_lookback=revisit_lookback, max_turn_deg=max_turn_deg,
+            turn_penalty=turn_penalty, turn_lookback=turn_lookback,
+            turn_max_steps=turn_max_steps, min_step_factor=min_step_factor,
+            guide_scale=guide_scale,
+            init_dir_radius_m=init_dir_radius_m,
+            heading_filter=heading_filter, heading_lookback=heading_lookback,
+            heading_seed_init=heading_seed_init,
+            heading_min_cos_deg=heading_min_cos_deg,
+            initial_dir=initial_dir,
+            init_cone_deg=init_cone_deg, init_cone_steps=init_cone_steps,
         )
 
     lons, lats, dists, info = run(

@@ -3,18 +3,20 @@ Métrica de aderência aos dados GPS.
 
 Como o shape oficial pode ter defeitos, a precisão do modelo é medida
 diretamente contra os dados observados:
-  coverage_pct    = % de pings a <= threshold da rota reconstruída
+  coverage_Xm     = % de pings a <= X m da rota reconstruída
   mean_gps_dist_m = distância média ping -> rota
   p95_gps_dist_m  = percentil 95 (captura fugas localizadas)
 
-threshold padrão = 15 m (precisão horizontal 95% de GPS urbano).
+Bandas padrão: 5 m, 10 m e 15 m (precisão horizontal de GPS urbano).
 O MAE contra o shape oficial é mantido apenas como referência.
 """
 
 import numpy as np
 import pandas as pd
 
-from config import M_PER_DEG_LAT, ADHERENCE_THRESHOLD_M
+from config import (
+    M_PER_DEG_LAT, ADHERENCE_THRESHOLD_M, ADHERENCE_THRESHOLDS_M,
+)
 from core.geometry import distance_matrix_to_polyline, meters_per_deg_lon
 
 
@@ -37,13 +39,20 @@ def route_as_polyline_model(route: pd.DataFrame) -> dict:
 def gps_adherence_metrics(
     route: pd.DataFrame,
     gps: pd.DataFrame,
+    thresholds_m=None,
     threshold_m: float = None,
     max_gps_points: int = 20000,
 ) -> dict:
     """
-    Distâncias GPS->rota e métricas de aderência.
+    Distâncias GPS->rota e métricas de aderência em várias bandas.
     Amostra até max_gps_points para manter o custo controlado.
+
+    Retorna, para cada banda X em thresholds_m, a chave `coverage_Xm`
+    (% de pings dentro de X metros). `coverage_pct` é a banda principal
+    (threshold_m, default 15 m).
     """
+    if thresholds_m is None:
+        thresholds_m = ADHERENCE_THRESHOLDS_M
     if threshold_m is None:
         threshold_m = ADHERENCE_THRESHOLD_M
 
@@ -51,6 +60,8 @@ def gps_adherence_metrics(
         "coverage_pct": np.nan, "mean_gps_dist_m": np.nan,
         "p95_gps_dist_m": np.nan, "n_gps_used": 0,
     }
+    for t in thresholds_m:
+        empty[f"coverage_{int(round(t))}m"] = np.nan
     if route is None or len(route) < 2 or gps is None or gps.empty:
         return empty
 
@@ -66,12 +77,15 @@ def gps_adherence_metrics(
     if len(valid) == 0:
         return empty
 
-    return {
+    out = {
         "coverage_pct": 100.0 * float(np.mean(valid <= threshold_m)),
         "mean_gps_dist_m": float(np.mean(valid)),
         "p95_gps_dist_m": float(np.percentile(valid, 95)),
         "n_gps_used": int(len(valid)),
     }
+    for t in thresholds_m:
+        out[f"coverage_{int(round(t))}m"] = 100.0 * float(np.mean(valid <= t))
+    return out
 
 
 def turns_per_km(route: pd.DataFrame) -> float:

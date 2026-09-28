@@ -1,37 +1,50 @@
 # Descoberta de rotas de ônibus a partir de dados GPS
 
-Modelo de reconstrução automática de trajetos de linhas de ônibus a partir
-de pings GPS brutos. A rota é descoberta diretamente dos dados observados,
-usando os terminais oficiais apenas como sementes (ponto de partida e
-destino), sem depender do shape oficial como referência de trajeto.
+Reconstrução automática do traçado de linhas de ônibus a partir de pings
+GPS brutos. A rota é descoberta diretamente dos dados observados. O traçado
+oficial é usado apenas para definir os terminais de partida e chegada e,
+depois, como referência de avaliação. Ele nunca guia a reconstrução, o que
+permite detectar divergências entre o traçado cadastrado e a operação real.
 
-Este repositório contém o **experimento v4**: 16 linhas de uma cidade
-brasileira (4 circulares + 12 ida/volta), com um dia completo de operação.
-O shape oficial é usado somente como referência de avaliação (MAE), nunca
-como guia da reconstrução — o que permite detectar divergências entre o
-shape cadastrado e a operação real.
+## O modelo
+
+Cada viagem de um veículo é cortada ao passar pelos terminais, de modo que
+cada segmento tenha um único sentido. Sobre a nuvem de pings do sentido, uma
+caminhada avança em passos curtos. Em cada passo, gera candidatos em um anel
+de raio adaptativo e escolhe o candidato com maior apoio nos dados, somando
+o inverso das distâncias aos pings que apontam na mesma direção. Um fator de
+guia favorece candidatos que avançam rumo ao destino. O raio cresce para
+atravessar trechos sem pings e encolhe quando há dados. Ao final, o traçado
+é suavizado (Chaikin).
+
+Os detalhes de cada etapa, com equações e ilustrações, estão descritos no
+relatório interno do projeto (não versionado neste repositório).
 
 ## Estrutura
 
 ```
 .
-├── config.py              # Configuração: linhas, grid de hiperparâmetros, métricas
-├── run_experiment.py      # Executa o grid completo de experimentos
-├── analysis.py            # Orquestrador das figuras de análise
-├── analysis_common.py     # Carregamento do sumário, ordem e cores dos configs
-├── analysis_maps.py       # Figuras em mapa, grids espaciais, melhores rotas
-├── analysis_perline.py    # Sensibilidade e heatmaps por linha
+├── config.py                  # Linhas, grid de hiperparâmetros e métricas
+├── run_experiment.py          # Executa o grid completo
+├── analysis.py                # Figuras globais e por linha
+├── analysis_common.py         # Carregamento do sumário e utilidades
+├── analysis_maps.py           # Mapas, grids espaciais e galeria
+├── analysis_perline.py        # Sensibilidade e efeito de dados por linha
+├── analysis_data_volume.py    # Análise do volume de dados
+├── analysis_regimes.py        # Análise por faixas de dados
+├── analysis_diagnostics.py    # Mapas de diagnóstico e painéis de desempenho
 ├── core/
-│   ├── shapes.py          # Carregamento e indexação dos shapes oficiais
-│   ├── trips.py           # Segmentação, separação de sentido, seleção de trips
-│   ├── model.py           # Modelo de descoberta de rota
-│   ├── geometry.py        # Geometria, distâncias, identificador de execução
-│   ├── metrics.py         # Métricas de aderência aos dados GPS
-│   └── imaging.py         # Imagens de rota com mapa de fundo
+│   ├── shapes.py              # Traçados oficiais e terminais
+│   ├── trips.py               # Segmentação, sentido e seleção de viagens
+│   ├── model.py               # Caminhada guiada
+│   ├── geometry.py            # Distâncias e geometria
+│   ├── metrics.py             # Métricas de aderência
+│   └── imaging.py             # Imagens de rota
 └── outputs/
-    ├── experiment_summary.csv   # Resultado de todas as execuções
-    ├── run.log                  # Log da execução do grid
-    └── analysis/                # Figuras e tabelas de análise
+    ├── experiment_summary.csv # Resultado de todas as execuções
+    ├── run_v9.log             # Log da execução do grid
+    ├── images/                # Melhor rota de cada par linha/sentido
+    └── analysis/              # Figuras e tabelas de análise
 ```
 
 ## Requisitos
@@ -42,88 +55,67 @@ pip install -r requirements.txt
 
 ## Dados de entrada
 
-O experimento espera dois arquivos de dados, referenciados em `config.py`:
+Os dados não são versionados (arquivos grandes). Coloque os dois arquivos
+em uma pasta `data/` na raiz do projeto:
 
-| Constante          | Arquivo esperado                                        |
-|--------------------|---------------------------------------------------------|
-| `PATH_POSITIONS`   | `urbs_data - cópia/2026_02_03_vehicle_positions.parquet` |
-| `SHAPE_XZ_PATH`    | `urbs_data - cópia/2026_07_01_shapeLinha.json.xz`         |
+| Constante        | Arquivo esperado                          |
+|------------------|-------------------------------------------|
+| `PATH_POSITIONS` | `data/multiday_positions.parquet`         |
+| `SHAPE_XZ_PATH`  | `data/2026_07_01_shapeLinha.json.xz`      |
 
-Por padrão, `config.py` procura esses arquivos no diretório **pai** do
-repositório (`.parent.parent`), na pasta `urbs_data - cópia/`. Os dados
-não são versionados (arquivos grandes / privados).
+Os caminhos ficam em `config.py` e podem ser ajustados.
 
 ## Como executar
 
 ```bash
-# 1. Rodar o grid de experimentos (gera rotas, sumário e imagens)
+# 1. Grid completo (gera rotas, sumário e imagens das melhores rotas)
 python run_experiment.py
 
-# 2. Gerar as figuras e tabelas de análise
+# 2. Figuras e tabelas de análise
 python analysis.py
+python analysis_data_volume.py
+python analysis_regimes.py
+
+# 3. Diagnósticos (mapas de falha e painéis de desempenho)
+python analysis_diagnostics.py
 ```
 
-O grid é definido em `config.py`:
+## Grid do experimento
 
 ```python
-BUS_COUNTS           = [2, 5]                     # circulares: nº de veículos
-SAMPLES_LIST         = [90, 180, 360]             # amostras angulares N
-MIN_METERS_LIST      = [5, 10, 20]                # raio mínimo r_min (m)
-MAX_METERS_LIST      = [250]                      # raio máximo r_max (m)
-INCREASE_METERS_LIST = [1.1, 1.25, 1.5, 2.0]      # taxa de crescimento G
+SAMPLES_LIST         = [90, 180, 360]                  # resolução angular N
+MIN_METERS_LIST      = [5, 10, 15, 20, 25]             # raio mínimo r_min
+MAX_METERS_LIST      = [250]                           # raio máximo r_max
+INCREASE_METERS_LIST = [1.1, 1.2, ..., 2.0]            # fator de crescimento g
+TRIP_COUNTS          = [1, 2, 5, 10, 20, 50, 100, 200, 500]  # nº de viagens
 ```
+
+São 1350 execuções por par linha/sentido. Com 13 linhas (4 circulares e 9 de
+ida e volta), o total é de 29.700 execuções.
 
 ## Métrica de aderência
 
-Como o shape oficial pode estar desatualizado, a qualidade da reconstrução
-é medida **diretamente contra os dados observados**:
+A qualidade é medida diretamente contra os dados observados, porque o
+traçado oficial pode estar desatualizado:
 
-- `coverage_pct` (%) — fração de pings a ≤ 15 m da rota reconstruída;
-- `mean_gps_dist_m` — distância média ping → rota;
-- `p95_gps_dist_m` — percentil 95 (captura fugas localizadas).
+- `coverage_5m`, `coverage_10m`, `coverage_15m` — fração de pings a até 5,
+  10 e 15 m da rota reconstruída;
+- `mean_gps_dist_m` — distância média entre ping e rota;
+- `p95_gps_dist_m` — percentil 95 dessa distância.
 
-O limiar de 15 m segue a precisão horizontal de 95% de receptores GPS
-single-frequency em ambiente urbano (Kaplan & Hegarty, 2017; GPS SPS
-Performance Standard, DoD, 2020). O MAE contra o shape oficial é mantido
-apenas como referência.
+A banda de 15 m é a referência. O erro médio contra o traçado oficial é
+mantido apenas como comparação.
 
 ## Resultados
 
-Grid completo: **1.152 execuções** (28 configs × 36 combinações, com
-circulares variando entre 2 e 5 veículos).
+Grid completo: **29.700 execuções**.
 
-- **620 execuções completas** (53,8%);
-- **18 dos 28 configs** atingiram o destino/loop fechado em pelo menos
-  uma combinação.
+- Conclusão global: 63,2%;
+- Aderência mediana na banda de 15 m: 86,5%;
+- Com 500 viagens: aderência mediana 93,8% e conclusão 94,9%;
+- 16 dos 22 pares linha/sentido atingem ao menos 90% de aderência com 500
+  viagens.
 
-Melhores resultados por linha/sentido (tabela completa em
-`outputs/analysis/best_configs_v4.csv`):
-
-| Linha | Sentido  | Aderência (%) | r_min (m) | Fator |
-|-------|----------|---------------|-----------|-------|
-| 021   | circular | 98,3          | 5         | 1,25  |
-| 020   | circular | 98,2          | 5         | 1,25  |
-| 022   | circular | 97,1          | 5         | 1,5   |
-| 506   | ida      | 94,4          | 10        | 1,5   |
-| 203   | ida      | 94,7          | 10        | 1,1   |
-| 303   | ida      | 89,1          | 10        | 1,5   |
-
-## Figuras de análise
-
-Geradas em `outputs/analysis/`:
-
-- `fig_01` – sensibilidade dos parâmetros;
-- `fig_02` – heatmaps de aderência mediana (ida/volta vs circular);
-- `fig_03` – matriz de taxa de conclusão por config × fator;
-- `fig_05` – galeria de casos de sucesso;
-- `fig_06` – aderência vs divergência do shape;
-- `fig_07` – comprimento reconstruído vs shape oficial;
-- `fig_08` – escalabilidade do tempo de execução;
-- `fig_10` – motivos de parada por config;
-- `fig_11` – p95 vs distância média;
-- `fig_12` – aderência vs volume de dados;
-- `fig_13` – compressão de pontos;
-- `fig_14` – separação de sentido (linha 303);
-- `per_line/` – sensibilidade, heatmaps, grids espaciais e melhores rotas
-  de cada config.
-
+As figuras ficam em `outputs/analysis/` (globais, `per_line/`,
+`data_volume/` e `regimes/`) e as imagens das melhores rotas em
+`outputs/images/`.
