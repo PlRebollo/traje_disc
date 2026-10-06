@@ -3,8 +3,8 @@ Métrica de aderência aos dados GPS.
 
 Como o shape oficial pode ter defeitos, a precisão do modelo é medida
 diretamente contra os dados observados:
-  coverage_Xm     = % de pings a <= X m da rota reconstruída
-  mean_gps_dist_m = distância média ping -> rota
+  coverage_Xm     = % de amostras de GPS a <= X m da rota reconstruída
+  mean_gps_dist_m = distância média amostra de GPS -> rota
   p95_gps_dist_m  = percentil 95 (captura fugas localizadas)
 
 Bandas padrão: 5 m, 10 m e 15 m (precisão horizontal de GPS urbano).
@@ -48,7 +48,7 @@ def gps_adherence_metrics(
     Amostra até max_gps_points para manter o custo controlado.
 
     Retorna, para cada banda X em thresholds_m, a chave `coverage_Xm`
-    (% de pings dentro de X metros). `coverage_pct` é a banda principal
+    (% de amostras de GPS dentro de X metros). `coverage_pct` é a banda principal
     (threshold_m, default 15 m).
     """
     if thresholds_m is None:

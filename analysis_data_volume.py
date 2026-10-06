@@ -2,7 +2,7 @@
 Análise de VOLUME DE DADOS — experimento v8.
 
 Pergunta central: o desempenho do modelo depende da QUANTIDADE de dados GPS
-(nº de viagens / pings de entrada)? Estas figuras isolam esse efeito,
+(nº de viagens / amostras de GPS de entrada)? Estas figuras isolam esse efeito,
 separando-o do modelo (que é idêntico ao do v7) e dos hiperparâmetros.
 
 Figuras (outputs/analysis/data_volume/):
@@ -13,7 +13,7 @@ Figuras (outputs/analysis/data_volume/):
 - dv_05: qualidade geométrica — distância GPS→rota e MAE do shape
 - dv_06: saturação linha a linha (small multiples)
 - dv_07: mapa de calor dados × fator de escala (dados > tuning)
-- dv_08: v7 vs v8 casados por volume de pings (mesmo modelo, mesmo plateau)
+- dv_08: v7 vs v8 casados por volume de amostras de GPS (mesmo modelo, mesmo plateau)
 - dv_09: custo em dados — viagens necessárias para atingir 90%
 
 Tabela: data_volume_summary.csv
@@ -117,11 +117,11 @@ def dv_01(df, out):
     if len(reach):
         xr = reach["xc"].iloc[0]
         ax.axvline(xr, ls="--", color="#444", lw=0.9)
-        ax.annotate(f"90% a partir de\n~{xr:,.0f} pings".replace(",", "."),
+        ax.annotate(f"90% a partir de\n~{xr:,.0f} amostras de GPS".replace(",", "."),
                     xy=(xr, 90), xytext=(xr * 1.3, 42), fontsize=7,
                     arrowprops=dict(arrowstyle="->", lw=0.7, color="#444"))
     ax.set_xscale("log")
-    ax.set_xlabel("pings GPS de entrada")
+    ax.set_xlabel("amostras de GPS de entrada")
     ax.set_ylabel("cobertura GPS (%)")
     ax.set_ylim(0, 105)
     ax.set_title("(a) Aderência ao dado cresce com o volume", fontsize=8)
@@ -137,7 +137,7 @@ def dv_01(df, out):
     xc = [iv.mid for iv in g.index]
     ax.plot(xc, 100 * g["comp"], "-o", color="#444", lw=1.5, ms=3.5)
     ax.set_xscale("log")
-    ax.set_xlabel("pings GPS de entrada")
+    ax.set_xlabel("amostras de GPS de entrada")
     ax.set_ylabel("execuções que completaram (%)")
     ax.set_ylim(0, 105)
     ax.set_title("(b) Conclusão do trajeto vs volume", fontsize=8)
@@ -301,7 +301,7 @@ def dv_05(df, out):
     ax.set_xticklabels([str(t) for t in trips], fontsize=6.5)
     ax.set_xlabel("número de viagens")
     ax.set_ylabel("distância (m, log)")
-    ax.set_title("(a) Quão longe a rota passa dos pings", fontsize=8)
+    ax.set_title("(a) Quão longe a rota passa dos amostras de GPS", fontsize=8)
     _clean(ax)
     ax.legend(fontsize=6.2, frameon=False)
 
@@ -321,7 +321,7 @@ def dv_05(df, out):
     _clean(ax)
     ax.legend(fontsize=6.2, frameon=False)
 
-    fig.suptitle("Com poucos dados a rota se afasta dos pings e do trajeto "
+    fig.suptitle("Com poucos dados a rota se afasta dos amostras de GPS e do trajeto "
                  "oficial", fontsize=9)
     fig.savefig(out / "dv_05_geometry_quality.png", dpi=200,
                 bbox_inches="tight")
@@ -400,36 +400,40 @@ def dv_07(df, out):
 
 
 # ============================================================
-# DV_08 — v7 vs v8 CASADOS POR VOLUME DE PINGS
+# DV_08 — v9 (anterior) vs v10 (refinado), por volume de amostras
 # ============================================================
+V9_SUMMARY = cfg.BASE / "experimento_v9_sem_limite" / "outputs" / \
+    "experiment_summary.csv"
+
+
 def dv_08(df, out):
-    if not V7_SUMMARY.exists():
-        print("[dv_08] v7 summary ausente — pulando")
+    if not V9_SUMMARY.exists():
+        print("[dv_08] resumo do v9 ausente — pulando")
         return
-    v7 = pd.read_csv(V7_SUMMARY)
-    v8 = df.copy()
-    v7["tipo"] = np.where(v7["sentido"] == "circular", "circular", "ida/volta")
+    v9 = pd.read_csv(V9_SUMMARY)
+    v10 = df.copy()
+    v9["tipo"] = np.where(v9["sentido"] == "circular", "circular", "ida/volta")
 
     fig, axes = plt.subplots(1, 2, figsize=(7.16, 2.9),
                              constrained_layout=True)
     for ax, (key, cor, name) in zip(
-            axes, [(v7, "#FF7F0E", "v7 (eixo = ônibus)"),
-                   (v8, "#1F77B4", "v8 (eixo = viagens)")]):
+            axes, [(v9, "#FF7F0E", "modelo anterior"),
+                   (v10, "#1F77B4", "modelo refinado")]):
         c = _vol_curve(key, REF, nbins=12)
         ax.plot(c["xc"], c["med"], "-o", color=cor, lw=1.7, ms=3.5,
-                label=f"{name} — mediana")
+                label=f"{name}: mediana")
         ax.fill_between(c["xc"], c["q1"], c["q3"], color=cor, alpha=0.14)
         ax.axhline(90, ls=":", color="#888", lw=0.9)
         ax.set_xscale("log")
-        ax.set_xlabel("pings GPS de entrada")
+        ax.set_xlabel("amostras de GPS de entrada")
         ax.set_ylim(0, 105)
         ax.set_title(name, fontsize=8)
         _clean(ax)
         ax.legend(fontsize=6.5, frameon=False, loc="lower right")
     axes[0].set_ylabel("cobertura \u2264 15 m (%)")
-    fig.suptitle("Mesmo modelo, mesmo plateau: o v7 só amostrou a faixa rica "
-                 "em dados", fontsize=9)
-    fig.savefig(out / "dv_08_v7_vs_v8.png", dpi=200, bbox_inches="tight")
+    fig.suptitle("Cobertura em função do volume de amostras: modelo anterior "
+                 "vs refinado", fontsize=9)
+    fig.savefig(out / "dv_08_v9_vs_v10.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
     print("[dv_08] ok")
 

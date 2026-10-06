@@ -59,10 +59,15 @@ def _load():
                 tmap[l].append(tuple(st))
                 if en is not None:
                     tmap[l].append(tuple(en))
-        _CACHE["dfpl"] = load_gps_data(cfg.PATH_POSITIONS,
-                                       linhas=sorted(set(cfg.LINHAS)),
-                                       split_terminals=tmap)
-        _CACHE["ts"] = build_trip_summary(_CACHE["dfpl"])
+        _CACHE["dfpl"] = load_gps_data(
+            cfg.PATH_POSITIONS, linhas=sorted(set(cfg.LINHAS)),
+            split_terminals=tmap, max_gap_s=cfg.MAX_GAP_S,
+            max_speed_kmh=(cfg.MAX_SPEED_KMH
+                           if getattr(cfg, "USE_SPEED_FILTER", False) else None),
+            min_dt_s=cfg.MIN_DT_S, terminal_near_m=cfg.TERMINAL_NEAR_M,
+            terminal_far_m=cfg.TERMINAL_FAR_M)
+        _CACHE["ts"] = build_trip_summary(
+            _CACHE["dfpl"], min_trip_points=cfg.MIN_TRIP_POINTS)
     return _CACHE
 
 
@@ -124,7 +129,7 @@ def diag_map(df, linha, sentido, out_dir=DIAG_DIR):
     if not gps.empty:
         gx, gy = FWD.transform(gps["lon"].to_numpy(), gps["lat"].to_numpy())
         ax.scatter(gx, gy, s=1.0, c="#C0C0C0", alpha=0.35, linewidths=0,
-                   rasterized=True, label="pings GPS")
+                   rasterized=True, label="amostras de GPS")
     sx, sy = FWD.transform(np.asarray(shape["lons"]), np.asarray(shape["lats"]))
     ax.plot(sx, sy, "--", color="#D62728", lw=1.3, alpha=0.9,
             label="shape oficial")
@@ -300,10 +305,10 @@ def quantitative_diagnosis(df, out_dir=ANALYSIS_DIR):
     """
     Separa erro de DADO de limitação do MODELO, por config:
 
-      gps_med      : mediana da distância dos pings ao shape oficial
+      gps_med      : mediana da distância dos amostras de GPS ao shape oficial
                      (baixo = o shape corresponde ao dado observado)
       gps_p90      : cauda dessa distância
-      frac_far     : % de pings a >100 m do shape (indício de 2º corredor
+      frac_far     : % de amostras de GPS a >100 m do shape (indício de 2º corredor
                      ou trip mal etiquetada)
       start_gap    : distância do início das trips ao terminal A da shape
                      (alto = ponto inicial mal definido)

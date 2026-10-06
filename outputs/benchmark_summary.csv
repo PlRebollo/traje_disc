@@ -1,0 +1,16 @@
+pipeline,modelo,cov15,cov10,cov5,concl,runtime,n
+baseline,M0_fail10_arr80_1d,92.3,86.8,69.0,83.3,0.26,12
+baseline,M1_fail1_arr80_1d,92.3,86.8,67.6,75.0,0.25,12
+baseline,M2_fail1_arr40_1d,92.7,87.2,67.8,75.0,0.25,12
+baseline,M3_fail1_arr25_1d,92.8,87.3,67.9,75.0,0.27,12
+baseline,M4_fail1_arr25_d1,91.4,86.3,62.2,75.0,0.22,12
+sem_filtros,M0_fail10_arr80_1d,92.7,88.8,70.1,91.7,0.23,12
+sem_filtros,M1_fail1_arr80_1d,92.7,88.8,69.8,83.3,0.21,12
+sem_filtros,M2_fail1_arr40_1d,93.4,89.4,70.5,83.3,0.22,12
+sem_filtros,M3_fail1_arr25_1d,93.4,89.4,70.7,83.3,0.22,12
+sem_filtros,M4_fail1_arr25_d1,91.3,86.0,60.1,75.0,0.2,12
+so_terminal,M0_fail10_arr80_1d,79.9,76.7,62.0,41.7,0.17,12
+so_terminal,M1_fail1_arr80_1d,77.2,73.5,57.8,33.3,0.17,12
+so_terminal,M2_fail1_arr40_1d,77.2,73.5,57.8,33.3,0.17,12
+so_terminal,M3_fail1_arr25_1d,77.2,73.5,57.8,25.0,0.17,12
+so_terminal,M4_fail1_arr25_d1,28.8,26.9,20.0,25.0,0.14,12

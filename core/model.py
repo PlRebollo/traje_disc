@@ -73,6 +73,7 @@ def _discover_core(
     arrival_radius_m: float,
     consecutive_fail_stop: int,
     verbose: bool,
+    dist_floor: float = 0.0,
     no_revisit: bool = False,
     revisit_penalty: float = 0.0,
     revisit_lookback: int = 4,
@@ -296,8 +297,12 @@ def _discover_core(
                     lim_h = math.cos(math.radians(heading_min_cos_deg))
                     w = w & (ch_vec[:, None] > lim_h)
 
-                inv = np.zeros_like(dist)
-                np.divide(1.0, dist, out=inv, where=w)
+                if dist_floor > 0.0:
+                    with np.errstate(invalid="ignore", divide="ignore"):
+                        inv = np.where(w, 1.0 / (dist + dist_floor), 0.0)
+                else:
+                    inv = np.zeros_like(dist)
+                    np.divide(1.0, dist, out=inv, where=w)
                 density = inv.sum(axis=0)
                 scores = density * guide[sl]
                 np.nan_to_num(scores, copy=False, nan=0.0, posinf=0.0,
@@ -412,6 +417,7 @@ def discover_route(
     loop_min_steps: int = 80,
     arrival_radius_m: float = 80.0,
     consecutive_fail_stop: int = 10,
+    dist_floor: float = 0.0,
     smooth_iterations: int = 2,
     retry_relaxed: bool = True,
     verbose: bool = False,
@@ -452,7 +458,8 @@ def discover_route(
             increase_meters=inc, decrease_meters=dec, max_meters=mmax,
             loop_close_radius=loop_close_radius, loop_min_steps=loop_min_steps,
             arrival_radius_m=arrival_radius_m,
-            consecutive_fail_stop=fail_stop, verbose=verbose,
+            consecutive_fail_stop=fail_stop, dist_floor=dist_floor,
+            verbose=verbose,
             no_revisit=no_revisit, revisit_penalty=revisit_penalty,
             revisit_lookback=revisit_lookback, max_turn_deg=max_turn_deg,
             turn_penalty=turn_penalty, turn_lookback=turn_lookback,

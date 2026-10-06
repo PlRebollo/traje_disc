@@ -108,10 +108,15 @@ def _get_pipeline():
                 pts = [tuple(st_ida), tuple(en_ida),
                        tuple(st_volta), tuple(en_volta)]
                 tmap[linha] = list(dict.fromkeys(pts))
-        _DATA["df_pl"] = load_gps_data(cfg.PATH_POSITIONS,
-                                       linhas=linhas_validas(),
-                                       split_terminals=tmap)
-        _DATA["trip_summary"] = build_trip_summary(_DATA["df_pl"])
+        _DATA["df_pl"] = load_gps_data(
+            cfg.PATH_POSITIONS, linhas=linhas_validas(),
+            split_terminals=tmap, max_gap_s=cfg.MAX_GAP_S,
+            max_speed_kmh=(cfg.MAX_SPEED_KMH
+                           if getattr(cfg, "USE_SPEED_FILTER", False) else None),
+            min_dt_s=cfg.MIN_DT_S, terminal_near_m=cfg.TERMINAL_NEAR_M,
+            terminal_far_m=cfg.TERMINAL_FAR_M)
+        _DATA["trip_summary"] = build_trip_summary(
+            _DATA["df_pl"], min_trip_points=cfg.MIN_TRIP_POINTS)
     return _DATA["df_pl"], _DATA["trip_summary"]
 
 
@@ -150,7 +155,7 @@ def _plot_map(ax, gps, route, shape_model, linha, sentido, subtitle,
     if not gps.empty:
         gx, gy = FWD.transform(gps["lon"].to_numpy(), gps["lat"].to_numpy())
         ax.scatter(gx, gy, s=1.0, c=COLOR_GPS, alpha=0.35, linewidths=0,
-                   label="pings GPS", rasterized=True)
+                   label="amostras de GPS", rasterized=True)
 
     if shape_model is not None:
         sx, sy = FWD.transform(np.asarray(shape_model["lons"]),
@@ -290,11 +295,16 @@ def _best_cell(cell: pd.DataFrame) -> pd.Series:
 
 
 def make_sensitivity_grid(df, shape_models, out_path, linha, sentido,
-                          n_trips=None, suptitle=None):
+                          n_trips=None, suptitle=None, min_list=None,
+                          inc_list=None):
     """Matriz de mapas: raio mínimo (linhas) × fator de escala (colunas).
 
     Cada célula mostra a melhor execução daquela combinação de parâmetros
     (qualquer N angular) — GPS (cinza), shape oficial (vermelho) e rota.
+
+    min_list / inc_list permitem fixar um subconjunto de raios e fatores.
+    Fatores fora do grid do experimento (por exemplo 1,25) são executados
+    diretamente, usando o melhor N angular disponível para o raio.
     """
     from core.model import discover_route
     from analysis_common import best_row as _best_row
@@ -327,12 +337,17 @@ def make_sensitivity_grid(df, shape_models, out_path, linha, sentido,
     y_min = min(gy.min(), shape["ys"].min()) - pad
     y_max = max(gy.max(), shape["ys"].max()) + pad
 
-    min_list = sorted(sub["meters"].unique())
-    inc_list = sorted(sub["increase_meters"].unique())
+    min_list = (sorted(sub["meters"].unique()) if min_list is None
+                else list(min_list))
+    inc_list = (sorted(sub["increase_meters"].unique()) if inc_list is None
+                else list(inc_list))
 
+    box_ar = (y_max - y_min) / max(x_max - x_min, 1.0)
+    fig_h = len(min_list) * (7.16 / len(inc_list)) * box_ar + 1.1
     fig, axes = plt.subplots(
         len(min_list), len(inc_list),
-        figsize=(7.16, 7.16), sharex=True, sharey=True, squeeze=False,
+        figsize=(7.16, float(np.clip(fig_h, 2.6, 11.0))),
+        constrained_layout=True, squeeze=False,
     )
 
     ref_h = route_h = start_h = None
@@ -346,43 +361,54 @@ def make_sensitivity_grid(df, shape_models, out_path, linha, sentido,
             ref_h, = ax.plot(shape["xs"], shape["ys"], color=COLOR_SHAPE,
                              linewidth=0.9, linestyle="--", alpha=0.8,
                              zorder=2)
+            row = None
             if not cell.empty:
                 row = _best_cell(cell)
-                route, info = discover_route(
-                    df=gps, initial_point=ss, end_point=es,
-                    meters=float(min_m),
-                    angular_samples=int(row["angular_samples"]),
-                    increase_meters=float(inc_m),
-                    decrease_meters=1.0 / float(inc_m),
-                    max_meters=float(row["max_meters"]),
-                    loop_close_radius=cfg.LOOP_CLOSE_RADIUS_M,
-                    loop_min_steps=cfg.LOOP_MIN_STEPS,
-                    arrival_radius_m=cfg.ARRIVAL_RADIUS_M,
-                    consecutive_fail_stop=cfg.CONSECUTIVE_FAIL_STOP,
-                    smooth_iterations=cfg.SMOOTH_ITERATIONS,
-                )
-                rx = route["lon"].to_numpy() * m_lon
-                ry = route["lat"].to_numpy() * cfg.M_PER_DEG_LAT
-                if len(rx):
-                    route_h, = ax.plot(rx, ry, color=COLOR_ROUTE,
-                                       linewidth=1.1, zorder=3)
-                    start_h = ax.scatter(
-                        rx[0], ry[0], s=12, color=COLOR_START,
-                        edgecolors="white", linewidths=0.4, zorder=4)
-                ok = bool(info["reached_end"] or info["closed_loop"])
-                adh = gps_adherence_metrics(route, gps)
-                tag = "OK" if ok else str(info["stop_reason"])[:11]
-                ax.text(
-                    0.04, 0.05,
-                    f"cov {adh['coverage_15m']:.0f}% | N{int(row['angular_samples'])} | {tag}",
-                    transform=ax.transAxes, fontsize=5.5, ha="left",
-                    va="bottom",
-                    bbox={"boxstyle": "round,pad=0.18", "facecolor": "white",
-                          "edgecolor": "none", "alpha": 0.8},
-                )
+                ams = int(row["angular_samples"])
+                mmax = float(row["max_meters"])
+            else:
+                alt = sub[sub["meters"] == min_m]
+                if not alt.empty:
+                    rr = _best_cell(alt)
+                    ams = int(rr["angular_samples"])
+                    mmax = float(rr["max_meters"])
+                else:
+                    ams, mmax = 180, float(cfg.MAX_METERS_LIST[0])
+            route, info = discover_route(
+                df=gps, initial_point=ss, end_point=es,
+                meters=float(min_m),
+                angular_samples=ams,
+                increase_meters=float(inc_m),
+                decrease_meters=1.0 / float(inc_m),
+                max_meters=mmax,
+                loop_close_radius=cfg.LOOP_CLOSE_RADIUS_M,
+                loop_min_steps=cfg.LOOP_MIN_STEPS,
+                arrival_radius_m=cfg.ARRIVAL_RADIUS_M,
+                consecutive_fail_stop=cfg.CONSECUTIVE_FAIL_STOP,
+                smooth_iterations=cfg.SMOOTH_ITERATIONS,
+            )
+            rx = route["lon"].to_numpy() * m_lon
+            ry = route["lat"].to_numpy() * cfg.M_PER_DEG_LAT
+            if len(rx):
+                route_h, = ax.plot(rx, ry, color=COLOR_ROUTE,
+                                   linewidth=1.1, zorder=3)
+                start_h = ax.scatter(
+                    rx[0], ry[0], s=12, color=COLOR_START,
+                    edgecolors="white", linewidths=0.4, zorder=4)
+            ok = bool(info["reached_end"] or info["closed_loop"])
+            adh = gps_adherence_metrics(route, gps)
+            tag = "OK" if ok else str(info["stop_reason"])[:11]
+            ax.text(
+                0.04, 0.05,
+                f"cov {adh['coverage_15m']:.0f}% | N{ams} | {tag}",
+                transform=ax.transAxes, fontsize=5.5, ha="left",
+                va="bottom",
+                bbox={"boxstyle": "round,pad=0.18", "facecolor": "white",
+                      "edgecolor": "none", "alpha": 0.8},
+            )
             ax.set_xlim(x_min, x_max)
             ax.set_ylim(y_min, y_max)
-            ax.set_aspect("equal", adjustable="box")
+            ax.set_box_aspect(box_ar)
             ax.set_xticks([])
             ax.set_yticks([])
             for spine in ax.spines.values():
@@ -396,27 +422,9 @@ def make_sensitivity_grid(df, shape_models, out_path, linha, sentido,
                               labelpad=4)
 
     if suptitle is None:
-        okcells = []
-        for r, min_m in enumerate(min_list):
-            for c, inc_m in enumerate(inc_list):
-                cell = sub[(sub["meters"] == min_m)
-                           & (sub["increase_meters"] == inc_m)]
-                if cell.empty:
-                    continue
-                row = _best_cell(cell)
-                if bool(row["completed"]):
-                    okcells.append(inc_m)
-        incs_ok = sorted(set(okcells))
-        if len(incs_ok) == 0:
-            nota = "nenhuma combinacao completa o trajeto"
-        elif len(incs_ok) < len(inc_list):
-            nota = "completa somente com fator " + " ou ".join(
-                f"{v:g}" for v in incs_ok)
-        else:
-            nota = "completa com todos os fatores"
         tag = f", {nt_eff} viagens" if n_trips is not None else ""
         suptitle = (f"Sensibilidade espacial — Linha {linha} "
-                    f"({sentido}{tag}, melhor N por celula): {nota}")
+                    f"({sentido}{tag})")
 
     handles = [h for h in [ref_h, route_h, start_h] if h is not None]
     if handles:
@@ -426,9 +434,7 @@ def make_sensitivity_grid(df, shape_models, out_path, linha, sentido,
             bbox_to_anchor=(0.5, 0.005),
         )
 
-    fig.suptitle(suptitle, fontsize=9.5, y=0.995)
-    fig.subplots_adjust(left=0.085, right=0.995, top=0.93, bottom=0.055,
-                        wspace=0.04, hspace=0.06)
+    fig.suptitle(suptitle, fontsize=9.5)
     fig.savefig(out_path, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"[grid {linha}/{sentido}] ok -> {out_path.name}")
@@ -448,3 +454,25 @@ def make_all_sensitivity_grids(df, shape_models, out_dir=None):
             out_dir / f"sensitivity_grid_{linha}_{sentido}.png",
             linha, sentido, n_trips=nt,
         )
+
+
+def make_all_sensitivity_grids_subset(df, shape_models, min_list, inc_list,
+                                      out_dir=None):
+    """Grade reduzida (raio × fator) para cada par linha/sentido."""
+    from analysis_common import best_row as _best_row
+    if out_dir is None:
+        out_dir = PER_LINE_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for (linha, sentido) in df[["linha_s", "sentido"]].drop_duplicates() \
+            .itertuples(index=False):
+        sub = df[(df["linha_s"] == linha) & (df["sentido"] == sentido)]
+        nt = int(_best_row(sub)["n_trips"])
+        make_sensitivity_grid(
+            df, shape_models,
+            out_dir / f"sensitivity_grid_{linha}_{sentido}.png",
+            linha, sentido, n_trips=nt, min_list=min_list, inc_list=inc_list,
+        )
+        n += 1
+    print(f"[grids] {n} grades -> {out_dir}")
+    return n

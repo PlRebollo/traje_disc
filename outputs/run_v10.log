@@ -1,0 +1,634 @@
+==================================================================
+Experimento v8 — eixo de dados por Nº DE VIAGENS
+fator 1.1–2.0 (10 valores) · 13 linhas · sem filtro direcional
+==================================================================
+
+Carregando shapes...
+Shapes: 669 | configs: 22
+
+Carregando dados GPS multi-dia...
+Amostras de GPS: 13,331,443 | trips válidas: 49,986
+
+Montando itens de trabalho (por nº de viagens)...
+  [0] 020/circular v1: 1/85 viagens | 1 veic | 6,447 amostras de GPS
+  [1] 020/circular v2: 2/85 viagens | 2 veic | 12,214 amostras de GPS
+  [2] 020/circular v5: 5/85 viagens | 5 veic | 29,063 amostras de GPS
+  [3] 020/circular v10: 10/85 viagens | 10 veic | 56,147 amostras de GPS
+  [4] 020/circular v20: 20/85 viagens | 20 veic | 59,772 amostras de GPS
+  [5] 020/circular v50: 50/85 viagens | 50 veic | 59,827 amostras de GPS
+  [6] 020/circular v100: 85/85 viagens | 85 veic | 59,837 amostras de GPS
+  [7] 020/circular v200: 85/85 viagens | 85 veic | 59,837 amostras de GPS
+  [8] 020/circular v500: 85/85 viagens | 85 veic | 59,837 amostras de GPS
+[valida] 021/circular: 2 descartadas
+  [9] 021/circular v1: 1/106 viagens | 1 veic | 5,856 amostras de GPS
+  [10] 021/circular v2: 2/106 viagens | 2 veic | 11,235 amostras de GPS
+  [11] 021/circular v5: 5/106 viagens | 5 veic | 27,163 amostras de GPS
+  [12] 021/circular v10: 10/106 viagens | 10 veic | 53,029 amostras de GPS
+  [13] 021/circular v20: 20/106 viagens | 20 veic | 59,776 amostras de GPS
+  [14] 021/circular v50: 50/106 viagens | 50 veic | 59,778 amostras de GPS
+  [15] 021/circular v100: 100/106 viagens | 100 veic | 59,774 amostras de GPS
+  [16] 021/circular v200: 106/106 viagens | 106 veic | 59,792 amostras de GPS
+  [17] 021/circular v500: 106/106 viagens | 106 veic | 59,792 amostras de GPS
+[valida] 022/circular: 2 descartadas
+  [18] 022/circular v1: 1/170 viagens | 1 veic | 5,057 amostras de GPS
+  [19] 022/circular v2: 2/170 viagens | 2 veic | 10,030 amostras de GPS
+  [20] 022/circular v5: 5/170 viagens | 5 veic | 22,831 amostras de GPS
+  [21] 022/circular v10: 10/170 viagens | 10 veic | 43,712 amostras de GPS
+  [22] 022/circular v20: 20/170 viagens | 20 veic | 59,758 amostras de GPS
+  [23] 022/circular v50: 50/170 viagens | 50 veic | 59,739 amostras de GPS
+  [24] 022/circular v100: 100/170 viagens | 100 veic | 59,748 amostras de GPS
+  [25] 022/circular v200: 170/170 viagens | 170 veic | 59,724 amostras de GPS
+  [26] 022/circular v500: 170/170 viagens | 170 veic | 59,724 amostras de GPS
+[valida] 023/circular: 1 descartadas
+  [27] 023/circular v1: 1/152 viagens | 1 veic | 4,999 amostras de GPS
+  [28] 023/circular v2: 2/152 viagens | 2 veic | 9,357 amostras de GPS
+  [29] 023/circular v5: 5/152 viagens | 5 veic | 21,856 amostras de GPS
+  [30] 023/circular v10: 10/152 viagens | 10 veic | 42,340 amostras de GPS
+  [31] 023/circular v20: 20/152 viagens | 20 veic | 59,782 amostras de GPS
+  [32] 023/circular v50: 50/152 viagens | 50 veic | 59,740 amostras de GPS
+  [33] 023/circular v100: 100/152 viagens | 100 veic | 59,716 amostras de GPS
+  [34] 023/circular v200: 152/152 viagens | 152 veic | 59,744 amostras de GPS
+  [35] 023/circular v500: 152/152 viagens | 152 veic | 59,744 amostras de GPS
+[valida] 303/ida: 20 descartadas
+  [36] 303/ida v1: 1/3339 viagens | 1 veic | 365 amostras de GPS
+  [37] 303/ida v2: 2/3339 viagens | 1 veic | 722 amostras de GPS
+  [38] 303/ida v5: 5/3339 viagens | 1 veic | 1,783 amostras de GPS
+  [39] 303/ida v10: 10/3339 viagens | 2 veic | 3,533 amostras de GPS
+  [40] 303/ida v20: 20/3339 viagens | 3 veic | 6,963 amostras de GPS
+  [41] 303/ida v50: 50/3339 viagens | 3 veic | 16,984 amostras de GPS
+  [42] 303/ida v100: 100/3339 viagens | 4 veic | 33,016 amostras de GPS
+  [43] 303/ida v200: 200/3339 viagens | 29 veic | 59,414 amostras de GPS
+  [44] 303/ida v500: 500/3339 viagens | 62 veic | 59,592 amostras de GPS
+[valida] 303/volta: 40 descartadas
+  [45] 303/volta v1: 1/3319 viagens | 1 veic | 347 amostras de GPS
+  [46] 303/volta v2: 2/3319 viagens | 1 veic | 693 amostras de GPS
+  [47] 303/volta v5: 5/3319 viagens | 2 veic | 1,720 amostras de GPS
+  [48] 303/volta v10: 10/3319 viagens | 3 veic | 3,406 amostras de GPS
+  [49] 303/volta v20: 20/3319 viagens | 3 veic | 6,736 amostras de GPS
+  [50] 303/volta v50: 50/3319 viagens | 3 veic | 16,510 amostras de GPS
+  [51] 303/volta v100: 100/3319 viagens | 3 veic | 32,141 amostras de GPS
+  [52] 303/volta v200: 200/3319 viagens | 21 veic | 59,448 amostras de GPS
+  [53] 303/volta v500: 500/3319 viagens | 72 veic | 59,585 amostras de GPS
+[valida] 203/ida: 20 descartadas
+  [54] 203/ida v1: 1/3354 viagens | 1 veic | 486 amostras de GPS
+  [55] 203/ida v2: 2/3354 viagens | 2 veic | 837 amostras de GPS
+  [56] 203/ida v5: 5/3354 viagens | 2 veic | 1,864 amostras de GPS
+  [57] 203/ida v10: 10/3354 viagens | 2 veic | 3,544 amostras de GPS
+  [58] 203/ida v20: 20/3354 viagens | 2 veic | 6,759 amostras de GPS
+  [59] 203/ida v50: 50/3354 viagens | 8 veic | 15,629 amostras de GPS
+  [60] 203/ida v100: 100/3354 viagens | 23 veic | 29,368 amostras de GPS
+  [61] 203/ida v200: 200/3354 viagens | 50 veic | 56,082 amostras de GPS
+  [62] 203/ida v500: 500/3354 viagens | 72 veic | 59,693 amostras de GPS
+[valida] 203/volta: 1 descartadas
+  [63] 203/volta v1: 1/3359 viagens | 1 veic | 346 amostras de GPS
+  [64] 203/volta v2: 2/3359 viagens | 1 veic | 682 amostras de GPS
+  [65] 203/volta v5: 5/3359 viagens | 1 veic | 1,651 amostras de GPS
+  [66] 203/volta v10: 10/3359 viagens | 1 veic | 3,236 amostras de GPS
+  [67] 203/volta v20: 20/3359 viagens | 2 veic | 6,342 amostras de GPS
+  [68] 203/volta v50: 50/3359 viagens | 10 veic | 14,894 amostras de GPS
+  [69] 203/volta v100: 100/3359 viagens | 19 veic | 28,249 amostras de GPS
+  [70] 203/volta v200: 200/3359 viagens | 34 veic | 54,207 amostras de GPS
+  [71] 203/volta v500: 500/3359 viagens | 62 veic | 59,732 amostras de GPS
+  [72] 603/ida v1: 1/3461 viagens | 1 veic | 218 amostras de GPS
+  [73] 603/ida v2: 2/3461 viagens | 1 veic | 431 amostras de GPS
+  [74] 603/ida v5: 5/3461 viagens | 1 veic | 1,057 amostras de GPS
+  [75] 603/ida v10: 10/3461 viagens | 1 veic | 2,077 amostras de GPS
+  [76] 603/ida v20: 20/3461 viagens | 2 veic | 4,070 amostras de GPS
+  [77] 603/ida v50: 50/3461 viagens | 10 veic | 9,419 amostras de GPS
+  [78] 603/ida v100: 100/3461 viagens | 28 veic | 17,826 amostras de GPS
+  [79] 603/ida v200: 200/3461 viagens | 41 veic | 34,164 amostras de GPS
+  [80] 603/ida v500: 500/3461 viagens | 56 veic | 59,195 amostras de GPS
+[valida] 603/volta: 37 descartadas
+  [81] 603/volta v1: 1/3519 viagens | 1 veic | 219 amostras de GPS
+  [82] 603/volta v2: 2/3519 viagens | 1 veic | 437 amostras de GPS
+  [83] 603/volta v5: 5/3519 viagens | 1 veic | 1,071 amostras de GPS
+  [84] 603/volta v10: 10/3519 viagens | 1 veic | 2,104 amostras de GPS
+  [85] 603/volta v20: 20/3519 viagens | 1 veic | 4,090 amostras de GPS
+  [86] 603/volta v50: 50/3519 viagens | 11 veic | 9,433 amostras de GPS
+  [87] 603/volta v100: 100/3519 viagens | 30 veic | 17,874 amostras de GPS
+  [88] 603/volta v200: 200/3519 viagens | 46 veic | 34,285 amostras de GPS
+  [89] 603/volta v500: 500/3519 viagens | 55 veic | 59,334 amostras de GPS
+[valida] 338/ida: 85 descartadas
+  [90] 338/ida v1: 1/1980 viagens | 1 veic | 251 amostras de GPS
+  [91] 338/ida v2: 2/1980 viagens | 2 veic | 496 amostras de GPS
+  [92] 338/ida v5: 5/1980 viagens | 5 veic | 1,228 amostras de GPS
+  [93] 338/ida v10: 10/1980 viagens | 10 veic | 2,441 amostras de GPS
+  [94] 338/ida v20: 20/1980 viagens | 15 veic | 4,836 amostras de GPS
+  [95] 338/ida v50: 50/1980 viagens | 29 veic | 11,939 amostras de GPS
+  [96] 338/ida v100: 100/1980 viagens | 44 veic | 23,506 amostras de GPS
+  [97] 338/ida v200: 200/1980 viagens | 60 veic | 46,131 amostras de GPS
+  [98] 338/ida v500: 500/1980 viagens | 75 veic | 59,149 amostras de GPS
+[valida] 338/volta: 28 descartadas
+  [99] 338/volta v1: 1/1954 viagens | 1 veic | 250 amostras de GPS
+  [100] 338/volta v2: 2/1954 viagens | 2 veic | 500 amostras de GPS
+  [101] 338/volta v5: 5/1954 viagens | 5 veic | 1,242 amostras de GPS
+  [102] 338/volta v10: 10/1954 viagens | 8 veic | 2,463 amostras de GPS
+  [103] 338/volta v20: 20/1954 viagens | 13 veic | 4,871 amostras de GPS
+  [104] 338/volta v50: 50/1954 viagens | 35 veic | 11,980 amostras de GPS
+  [105] 338/volta v100: 100/1954 viagens | 51 veic | 23,608 amostras de GPS
+  [106] 338/volta v200: 200/1954 viagens | 61 veic | 46,295 amostras de GPS
+  [107] 338/volta v500: 500/1954 viagens | 76 veic | 59,205 amostras de GPS
+[valida] 658/ida: 3 descartadas
+  [108] 658/ida v1: 1/1574 viagens | 1 veic | 343 amostras de GPS
+  [109] 658/ida v2: 2/1574 viagens | 1 veic | 685 amostras de GPS
+  [110] 658/ida v5: 5/1574 viagens | 1 veic | 1,700 amostras de GPS
+  [111] 658/ida v10: 10/1574 viagens | 2 veic | 3,368 amostras de GPS
+  [112] 658/ida v20: 20/1574 viagens | 3 veic | 6,661 amostras de GPS
+  [113] 658/ida v50: 50/1574 viagens | 3 veic | 16,308 amostras de GPS
+  [114] 658/ida v100: 100/1574 viagens | 4 veic | 31,840 amostras de GPS
+  [115] 658/ida v200: 200/1574 viagens | 4 veic | 58,342 amostras de GPS
+  [116] 658/ida v500: 500/1574 viagens | 16 veic | 58,419 amostras de GPS
+[valida] 658/volta: 16 descartadas
+  [117] 658/volta v1: 1/1567 viagens | 1 veic | 341 amostras de GPS
+  [118] 658/volta v2: 2/1567 viagens | 2 veic | 677 amostras de GPS
+  [119] 658/volta v5: 5/1567 viagens | 2 veic | 1,681 amostras de GPS
+  [120] 658/volta v10: 10/1567 viagens | 2 veic | 3,342 amostras de GPS
+  [121] 658/volta v20: 20/1567 viagens | 3 veic | 6,608 amostras de GPS
+  [122] 658/volta v50: 50/1567 viagens | 5 veic | 16,231 amostras de GPS
+  [123] 658/volta v100: 100/1567 viagens | 5 veic | 31,743 amostras de GPS
+  [124] 658/volta v200: 200/1567 viagens | 6 veic | 58,263 amostras de GPS
+  [125] 658/volta v500: 500/1567 viagens | 23 veic | 58,411 amostras de GPS
+[valida] 506/ida: 6 descartadas
+  [126] 506/ida v1: 1/2209 viagens | 1 veic | 251 amostras de GPS
+  [127] 506/ida v2: 2/2209 viagens | 1 veic | 502 amostras de GPS
+  [128] 506/ida v5: 5/2209 viagens | 2 veic | 1,240 amostras de GPS
+  [129] 506/ida v10: 10/2209 viagens | 3 veic | 2,411 amostras de GPS
+  [130] 506/ida v20: 20/2209 viagens | 3 veic | 4,639 amostras de GPS
+  [131] 506/ida v50: 50/2209 viagens | 4 veic | 10,949 amostras de GPS
+  [132] 506/ida v100: 100/2209 viagens | 12 veic | 20,874 amostras de GPS
+  [133] 506/ida v200: 200/2209 viagens | 33 veic | 39,514 amostras de GPS
+  [134] 506/ida v500: 500/2209 viagens | 50 veic | 59,289 amostras de GPS
+[valida] 506/volta: 39 descartadas
+  [135] 506/volta v1: 1/2151 viagens | 1 veic | 264 amostras de GPS
+  [136] 506/volta v2: 2/2151 viagens | 1 veic | 525 amostras de GPS
+  [137] 506/volta v5: 5/2151 viagens | 2 veic | 1,300 amostras de GPS
+  [138] 506/volta v10: 10/2151 viagens | 2 veic | 2,550 amostras de GPS
+  [139] 506/volta v20: 20/2151 viagens | 3 veic | 4,864 amostras de GPS
+  [140] 506/volta v50: 50/2151 viagens | 5 veic | 11,435 amostras de GPS
+  [141] 506/volta v100: 100/2151 viagens | 11 veic | 21,869 amostras de GPS
+  [142] 506/volta v200: 200/2151 viagens | 33 veic | 41,532 amostras de GPS
+  [143] 506/volta v500: 500/2151 viagens | 52 veic | 59,359 amostras de GPS
+[valida] 505/ida: 67 descartadas
+  [144] 505/ida v1: 1/2332 viagens | 1 veic | 373 amostras de GPS
+  [145] 505/ida v2: 2/2332 viagens | 2 veic | 602 amostras de GPS
+  [146] 505/ida v5: 5/2332 viagens | 4 veic | 1,254 amostras de GPS
+  [147] 505/ida v10: 10/2332 viagens | 6 veic | 2,278 amostras de GPS
+  [148] 505/ida v20: 20/2332 viagens | 8 veic | 4,267 amostras de GPS
+  [149] 505/ida v50: 50/2332 viagens | 9 veic | 9,969 amostras de GPS
+  [150] 505/ida v100: 100/2332 viagens | 9 veic | 19,085 amostras de GPS
+  [151] 505/ida v200: 200/2332 viagens | 15 veic | 36,128 amostras de GPS
+  [152] 505/ida v500: 500/2332 viagens | 57 veic | 59,140 amostras de GPS
+[valida] 505/volta: 1 descartadas
+  [153] 505/volta v1: 1/2282 viagens | 1 veic | 226 amostras de GPS
+  [154] 505/volta v2: 2/2282 viagens | 2 veic | 449 amostras de GPS
+  [155] 505/volta v5: 5/2282 viagens | 2 veic | 1,101 amostras de GPS
+  [156] 505/volta v10: 10/2282 viagens | 5 veic | 2,160 amostras de GPS
+  [157] 505/volta v20: 20/2282 viagens | 5 veic | 4,209 amostras de GPS
+  [158] 505/volta v50: 50/2282 viagens | 8 veic | 10,051 amostras de GPS
+  [159] 505/volta v100: 100/2282 viagens | 10 veic | 19,294 amostras de GPS
+  [160] 505/volta v200: 200/2282 viagens | 23 veic | 36,671 amostras de GPS
+  [161] 505/volta v500: 500/2282 viagens | 69 veic | 58,884 amostras de GPS
+[valida] 307/ida: 10 descartadas
+  [162] 307/ida v1: 1/1928 viagens | 1 veic | 263 amostras de GPS
+  [163] 307/ida v2: 2/1928 viagens | 1 veic | 521 amostras de GPS
+  [164] 307/ida v5: 5/1928 viagens | 1 veic | 1,286 amostras de GPS
+  [165] 307/ida v10: 10/1928 viagens | 2 veic | 2,535 amostras de GPS
+  [166] 307/ida v20: 20/1928 viagens | 3 veic | 4,932 amostras de GPS
+  [167] 307/ida v50: 50/1928 viagens | 12 veic | 11,562 amostras de GPS
+  [168] 307/ida v100: 100/1928 viagens | 28 veic | 21,914 amostras de GPS
+  [169] 307/ida v200: 200/1928 viagens | 44 veic | 41,841 amostras de GPS
+  [170] 307/ida v500: 500/1928 viagens | 57 veic | 59,505 amostras de GPS
+[valida] 307/volta: 2 descartadas
+  [171] 307/volta v1: 1/1923 viagens | 1 veic | 278 amostras de GPS
+  [172] 307/volta v2: 2/1923 viagens | 1 veic | 550 amostras de GPS
+  [173] 307/volta v5: 5/1923 viagens | 1 veic | 1,349 amostras de GPS
+  [174] 307/volta v10: 10/1923 viagens | 1 veic | 2,637 amostras de GPS
+  [175] 307/volta v20: 20/1923 viagens | 3 veic | 5,117 amostras de GPS
+  [176] 307/volta v50: 50/1923 viagens | 8 veic | 12,048 amostras de GPS
+  [177] 307/volta v100: 100/1923 viagens | 30 veic | 22,705 amostras de GPS
+  [178] 307/volta v200: 200/1923 viagens | 44 veic | 43,211 amostras de GPS
+  [179] 307/volta v500: 500/1923 viagens | 58 veic | 59,478 amostras de GPS
+[valida] 607/ida: 10 descartadas
+  [180] 607/ida v1: 1/958 viagens | 1 veic | 385 amostras de GPS
+  [181] 607/ida v2: 2/958 viagens | 1 veic | 766 amostras de GPS
+  [182] 607/ida v5: 5/958 viagens | 1 veic | 1,852 amostras de GPS
+  [183] 607/ida v10: 10/958 viagens | 2 veic | 3,570 amostras de GPS
+  [184] 607/ida v20: 20/958 viagens | 7 veic | 6,906 amostras de GPS
+  [185] 607/ida v50: 50/958 viagens | 23 veic | 16,515 amostras de GPS
+  [186] 607/ida v100: 100/958 viagens | 28 veic | 32,133 amostras de GPS
+  [187] 607/ida v200: 200/958 viagens | 35 veic | 59,747 amostras de GPS
+  [188] 607/ida v500: 500/958 viagens | 39 veic | 59,757 amostras de GPS
+[valida] 607/volta: 2 descartadas
+  [189] 607/volta v1: 1/859 viagens | 1 veic | 379 amostras de GPS
+  [190] 607/volta v2: 2/859 viagens | 1 veic | 752 amostras de GPS
+  [191] 607/volta v5: 5/859 viagens | 1 veic | 1,854 amostras de GPS
+  [192] 607/volta v10: 10/859 viagens | 1 veic | 3,581 amostras de GPS
+  [193] 607/volta v20: 20/859 viagens | 6 veic | 6,862 amostras de GPS
+  [194] 607/volta v50: 50/859 viagens | 24 veic | 16,129 amostras de GPS
+  [195] 607/volta v100: 100/859 viagens | 26 veic | 31,171 amostras de GPS
+  [196] 607/volta v200: 200/859 viagens | 33 veic | 59,746 amostras de GPS
+  [197] 607/volta v500: 500/859 viagens | 38 veic | 59,744 amostras de GPS
+Itens de trabalho: 198 | execuções: 17,820
+  [020_circular_v1] 90 execs | completas 22/90 | melhor cov15=98%
+  [1/198] 3.1 min | ETA 614.9 min
+  [020_circular_v2] 90 execs | completas 85/90 | melhor cov15=98%
+  [2/198] 8.1 min | ETA 790.7 min
+  [021_circular_v1] 90 execs | completas 67/90 | melhor cov15=96%
+  [3/198] 11.4 min | ETA 743.7 min
+  [021_circular_v2] 90 execs | completas 84/90 | melhor cov15=98%
+  [4/198] 19.3 min | ETA 936.8 min
+  [020_circular_v5] 90 execs | completas 90/90 | melhor cov15=98%
+  [5/198] 19.8 min | ETA 764.5 min
+  [020_circular_v10] 90 execs | completas 57/90 | melhor cov15=98%
+  [6/198] 23.9 min | ETA 766.4 min
+  [020_circular_v20] 90 execs | completas 63/90 | melhor cov15=99%
+  [7/198] 24.0 min | ETA 654.9 min
+  [020_circular_v200] 90 execs | completas 90/90 | melhor cov15=98%
+  [020_circular_v100] 90 execs | completas 90/90 | melhor cov15=98%
+  [8/198] 24.9 min | ETA 591.9 min
+  [9/198] 24.9 min | ETA 523.4 min
+  [020_circular_v50] 90 execs | completas 90/90 | melhor cov15=98%
+  [10/198] 24.9 min | ETA 469.0 min
+  [020_circular_v500] 90 execs | completas 90/90 | melhor cov15=98%
+  [11/198] 28.6 min | ETA 485.5 min
+  [022_circular_v1] 90 execs | completas 71/90 | melhor cov15=96%
+  [12/198] 30.8 min | ETA 476.8 min
+  [022_circular_v2] 90 execs | completas 84/90 | melhor cov15=96%
+  [13/198] 36.3 min | ETA 517.1 min
+  [021_circular_v5] 90 execs | completas 89/90 | melhor cov15=98%
+  [14/198] 37.0 min | ETA 486.2 min
+  [021_circular_v10] 90 execs | completas 90/90 | melhor cov15=99%
+  [15/198] 42.0 min | ETA 512.6 min
+  [021_circular_v20] 90 execs | completas 89/90 | melhor cov15=98%
+  [16/198] 47.6 min | ETA 541.2 min
+  [021_circular_v50] 90 execs | completas 89/90 | melhor cov15=98%
+  [17/198] 47.8 min | ETA 509.3 min
+  [021_circular_v100] 90 execs | completas 90/90 | melhor cov15=97%
+  [18/198] 48.8 min | ETA 487.7 min
+  [021_circular_v200] 90 execs | completas 90/90 | melhor cov15=97%
+  [19/198] 48.9 min | ETA 460.6 min
+  [021_circular_v500] 90 execs | completas 90/90 | melhor cov15=97%
+  [20/198] 49.0 min | ETA 435.9 min
+  [023_circular_v1] 90 execs | completas 1/90 | melhor cov15=90%
+  [21/198] 50.3 min | ETA 424.2 min
+  [022_circular_v5] 90 execs | completas 88/90 | melhor cov15=96%
+  [22/198] 51.4 min | ETA 411.4 min
+  [023_circular_v2] 90 execs | completas 82/90 | melhor cov15=87%
+  [23/198] 55.6 min | ETA 422.8 min
+  [022_circular_v10] 90 execs | completas 89/90 | melhor cov15=97%
+  [24/198] 56.2 min | ETA 407.7 min
+  [022_circular_v20] 90 execs | completas 90/90 | melhor cov15=98%
+  [25/198] 62.7 min | ETA 434.2 min
+  [023_circular_v5] 90 execs | completas 85/90 | melhor cov15=91%
+  [26/198] 64.3 min | ETA 425.2 min
+  [022_circular_v50] 90 execs | completas 90/90 | melhor cov15=98%
+  [27/198] 67.9 min | ETA 429.9 min
+  [022_circular_v100] 90 execs | completas 90/90 | melhor cov15=97%
+  [28/198] 68.5 min | ETA 416.1 min
+  [022_circular_v200] 90 execs | completas 88/90 | melhor cov15=96%
+  [29/198] 69.3 min | ETA 404.0 min
+  [303_ida_v1] 90 execs | completas 9/90 | melhor cov15=80%
+  [30/198] 69.4 min | ETA 388.6 min
+  [303_ida_v2] 90 execs | completas 7/90 | melhor cov15=84%
+  [31/198] 69.5 min | ETA 374.4 min
+  [022_circular_v500] 90 execs | completas 88/90 | melhor cov15=96%
+  [32/198] 69.5 min | ETA 360.6 min
+  [303_ida_v5] 90 execs | completas 56/90 | melhor cov15=91%
+  [33/198] 69.9 min | ETA 349.6 min
+  [303_ida_v10] 90 execs | completas 74/90 | melhor cov15=93%
+  [34/198] 70.4 min | ETA 339.7 min
+  [303_ida_v20] 90 execs | completas 71/90 | melhor cov15=93%
+  [35/198] 72.0 min | ETA 335.3 min
+  [023_circular_v10] 90 execs | completas 90/90 | melhor cov15=93%
+  [36/198] 72.9 min | ETA 328.2 min
+  [023_circular_v20] 90 execs | completas 88/90 | melhor cov15=93%
+  [37/198] 76.0 min | ETA 330.9 min
+  [303_ida_v50] 90 execs | completas 73/90 | melhor cov15=95%
+  [38/198] 76.6 min | ETA 322.4 min
+  [303_volta_v1] 90 execs | completas 0/90 | melhor cov15=82%
+  [39/198] 76.7 min | ETA 312.6 min
+  [303_volta_v2] 90 execs | completas 10/90 | melhor cov15=86%
+  [40/198] 76.9 min | ETA 303.6 min
+  [303_volta_v5] 90 execs | completas 14/90 | melhor cov15=94%
+  [41/198] 77.3 min | ETA 296.0 min
+  [303_volta_v10] 90 execs | completas 40/90 | melhor cov15=95%
+  [42/198] 78.3 min | ETA 290.7 min
+  [303_volta_v20] 90 execs | completas 80/90 | melhor cov15=97%
+  [43/198] 80.7 min | ETA 290.8 min
+  [303_ida_v100] 90 execs | completas 81/90 | melhor cov15=97%
+  [44/198] 81.3 min | ETA 284.6 min
+  [023_circular_v50] 90 execs | completas 90/90 | melhor cov15=94%
+  [45/198] 82.7 min | ETA 281.0 min
+  [023_circular_v100] 90 execs | completas 90/90 | melhor cov15=94%
+  [46/198] 84.5 min | ETA 279.2 min
+  [303_ida_v200] 90 execs | completas 90/90 | melhor cov15=94%
+  [47/198] 85.4 min | ETA 274.3 min
+  [203_ida_v1] 90 execs | completas 0/90 | melhor cov15=5%
+  [48/198] 85.4 min | ETA 266.9 min
+  [203_ida_v2] 90 execs | completas 1/90 | melhor cov15=89%
+  [49/198] 85.6 min | ETA 260.2 min
+  [203_ida_v5] 90 execs | completas 27/90 | melhor cov15=89%
+  [50/198] 86.0 min | ETA 254.7 min
+  [023_circular_v200] 90 execs | completas 70/90 | melhor cov15=93%
+  [51/198] 86.5 min | ETA 249.3 min
+  [303_volta_v50] 90 execs | completas 82/90 | melhor cov15=98%
+  [52/198] 86.9 min | ETA 243.9 min
+  [203_ida_v10] 90 execs | completas 53/90 | melhor cov15=96%
+  [53/198] 87.0 min | ETA 238.0 min
+  [023_circular_v500] 90 execs | completas 70/90 | melhor cov15=93%
+  [54/198] 87.1 min | ETA 232.2 min
+  [303_ida_v500] 90 execs | completas 90/90 | melhor cov15=93%
+  [55/198] 88.7 min | ETA 230.7 min
+  [203_ida_v20] 90 execs | completas 54/90 | melhor cov15=98%
+  [56/198] 88.8 min | ETA 225.2 min
+  [203_volta_v1] 90 execs | completas 17/90 | melhor cov15=95%
+  [57/198] 88.9 min | ETA 219.9 min
+  [203_volta_v2] 90 execs | completas 0/90 | melhor cov15=98%
+  [58/198] 89.1 min | ETA 215.0 min
+  [203_volta_v5] 90 execs | completas 0/90 | melhor cov15=99%
+  [59/198] 89.5 min | ETA 210.8 min
+  [203_volta_v10] 90 execs | completas 5/90 | melhor cov15=99%
+  [60/198] 90.4 min | ETA 207.9 min
+  [303_volta_v100] 90 execs | completas 85/90 | melhor cov15=99%
+  [61/198] 90.5 min | ETA 203.3 min
+  [203_volta_v20] 90 execs | completas 58/90 | melhor cov15=98%
+  [62/198] 92.4 min | ETA 202.8 min
+  [203_ida_v50] 90 execs | completas 89/90 | melhor cov15=92%
+  [63/198] 93.6 min | ETA 200.7 min
+  [303_volta_v200] 90 execs | completas 90/90 | melhor cov15=94%
+  [64/198] 95.8 min | ETA 200.6 min
+  [203_volta_v50] 90 execs | completas 80/90 | melhor cov15=93%
+  [65/198] 96.9 min | ETA 198.2 min
+  [603_ida_v1] 90 execs | completas 6/90 | melhor cov15=98%
+  [66/198] 96.9 min | ETA 193.9 min
+  [603_ida_v2] 90 execs | completas 36/90 | melhor cov15=99%
+  [67/198] 97.0 min | ETA 189.8 min
+  [603_ida_v5] 90 execs | completas 26/90 | melhor cov15=99%
+  [68/198] 97.3 min | ETA 186.0 min
+  [203_ida_v100] 90 execs | completas 90/90 | melhor cov15=86%
+  [69/198] 97.4 min | ETA 182.2 min
+  [303_volta_v500] 90 execs | completas 90/90 | melhor cov15=95%
+  [70/198] 97.5 min | ETA 178.2 min
+  [603_ida_v10] 90 execs | completas 71/90 | melhor cov15=99%
+  [71/198] 97.7 min | ETA 174.8 min
+  [603_ida_v20] 90 execs | completas 51/90 | melhor cov15=98%
+  [72/198] 98.4 min | ETA 172.3 min
+  [203_ida_v200] 90 execs | completas 90/90 | melhor cov15=89%
+  [73/198] 99.2 min | ETA 169.9 min
+  [603_ida_v50] 90 execs | completas 88/90 | melhor cov15=95%
+  [74/198] 100.3 min | ETA 168.1 min
+  [603_volta_v1] 90 execs | completas 2/90 | melhor cov15=95%
+  [75/198] 100.4 min | ETA 164.7 min
+  [603_volta_v2] 90 execs | completas 14/90 | melhor cov15=96%
+  [76/198] 100.5 min | ETA 161.4 min
+  [203_ida_v500] 90 execs | completas 90/90 | melhor cov15=88%
+  [77/198] 100.6 min | ETA 158.1 min
+  [603_volta_v5] 90 execs | completas 31/90 | melhor cov15=98%
+  [78/198] 100.8 min | ETA 155.0 min
+  [603_volta_v10] 90 execs | completas 11/90 | melhor cov15=98%
+  [79/198] 101.1 min | ETA 152.2 min
+  [603_volta_v20] 90 execs | completas 8/90 | melhor cov15=99%
+  [80/198] 101.8 min | ETA 150.1 min
+  [203_volta_v100] 90 execs | completas 90/90 | melhor cov15=90%
+  [81/198] 102.3 min | ETA 147.8 min
+  [603_ida_v100] 90 execs | completas 90/90 | melhor cov15=95%
+  [82/198] 103.0 min | ETA 145.7 min
+  [603_volta_v50] 90 execs | completas 83/90 | melhor cov15=94%
+  [83/198] 103.9 min | ETA 144.0 min
+  [338_ida_v1] 90 execs | completas 16/90 | melhor cov15=69%
+  [84/198] 104.0 min | ETA 141.2 min
+  [338_ida_v2] 90 execs | completas 22/90 | melhor cov15=78%
+  [85/198] 104.1 min | ETA 138.5 min
+  [338_ida_v5] 90 execs | completas 78/90 | melhor cov15=91%
+  [86/198] 104.5 min | ETA 136.1 min
+  [603_ida_v200] 90 execs | completas 90/90 | melhor cov15=97%
+  [87/198] 105.0 min | ETA 133.9 min
+  [338_ida_v10] 90 execs | completas 82/90 | melhor cov15=98%
+  [88/198] 105.3 min | ETA 131.6 min
+  [203_volta_v200] 90 execs | completas 90/90 | melhor cov15=88%
+  [89/198] 105.3 min | ETA 129.0 min
+  [603_ida_v500] 90 execs | completas 90/90 | melhor cov15=98%
+  [90/198] 106.4 min | ETA 127.7 min
+  [338_ida_v20] 90 execs | completas 89/90 | melhor cov15=98%
+  [91/198] 106.5 min | ETA 125.2 min
+  [603_volta_v100] 90 execs | completas 90/90 | melhor cov15=93%
+  [92/198] 107.0 min | ETA 123.3 min
+  [338_volta_v1] 90 execs | completas 0/90 | melhor cov15=78%
+  [93/198] 107.1 min | ETA 120.9 min
+  [338_volta_v2] 90 execs | completas 12/90 | melhor cov15=87%
+  [94/198] 107.2 min | ETA 118.6 min
+  [203_volta_v500] 90 execs | completas 90/90 | melhor cov15=87%
+  [95/198] 107.5 min | ETA 116.6 min
+  [338_volta_v5] 90 execs | completas 70/90 | melhor cov15=96%
+  [96/198] 107.6 min | ETA 114.3 min
+  [338_volta_v10] 90 execs | completas 80/90 | melhor cov15=98%
+  [97/198] 108.3 min | ETA 112.8 min
+  [603_volta_v200] 90 execs | completas 90/90 | melhor cov15=95%
+  [98/198] 109.0 min | ETA 111.2 min
+  [338_ida_v50] 90 execs | completas 89/90 | melhor cov15=98%
+  [99/198] 109.1 min | ETA 109.1 min
+  [338_volta_v20] 90 execs | completas 85/90 | melhor cov15=98%
+  [100/198] 109.1 min | ETA 106.9 min
+  [603_volta_v500] 90 execs | completas 90/90 | melhor cov15=97%
+  [101/198] 110.5 min | ETA 106.1 min
+  [658_ida_v1] 90 execs | completas 5/90 | melhor cov15=77%
+  [102/198] 110.6 min | ETA 104.1 min
+  [658_ida_v2] 90 execs | completas 4/90 | melhor cov15=85%
+  [103/198] 110.7 min | ETA 102.1 min
+  [658_ida_v5] 90 execs | completas 63/90 | melhor cov15=95%
+  [104/198] 111.1 min | ETA 100.5 min
+  [338_volta_v50] 90 execs | completas 85/90 | melhor cov15=98%
+  [105/198] 111.9 min | ETA 99.1 min
+  [338_ida_v100] 90 execs | completas 90/90 | melhor cov15=98%
+  [106/198] 111.9 min | ETA 97.1 min
+  [658_ida_v10] 90 execs | completas 79/90 | melhor cov15=97%
+  [107/198] 111.9 min | ETA 95.2 min
+  [658_ida_v20] 90 execs | completas 38/90 | melhor cov15=98%
+  [108/198] 113.6 min | ETA 94.7 min
+  [338_ida_v200] 90 execs | completas 90/90 | melhor cov15=98%
+  [109/198] 114.1 min | ETA 93.2 min
+  [338_ida_v500] 90 execs | completas 90/90 | melhor cov15=98%
+  [110/198] 114.8 min | ETA 91.9 min
+  [658_volta_v1] 90 execs | completas 5/90 | melhor cov15=87%
+  [111/198] 114.9 min | ETA 90.1 min
+  [658_volta_v2] 90 execs | completas 74/90 | melhor cov15=92%
+  [112/198] 115.1 min | ETA 88.4 min
+  [338_volta_v100] 90 execs | completas 87/90 | melhor cov15=98%
+  [113/198] 115.2 min | ETA 86.7 min
+  [658_volta_v5] 90 execs | completas 79/90 | melhor cov15=98%
+  [114/198] 115.5 min | ETA 85.1 min
+  [658_volta_v10] 90 execs | completas 85/90 | melhor cov15=98%
+  [115/198] 116.0 min | ETA 83.8 min
+  [658_ida_v50] 90 execs | completas 73/90 | melhor cov15=98%
+  [116/198] 116.2 min | ETA 82.1 min
+  [338_volta_v200] 90 execs | completas 89/90 | melhor cov15=98%
+  [117/198] 116.4 min | ETA 80.6 min
+  [338_volta_v500] 90 execs | completas 90/90 | melhor cov15=98%
+  [118/198] 117.0 min | ETA 79.3 min
+  [658_volta_v20] 90 execs | completas 86/90 | melhor cov15=98%
+  [119/198] 117.2 min | ETA 77.8 min
+  [506_ida_v1] 90 execs | completas 1/90 | melhor cov15=61%
+  [120/198] 117.2 min | ETA 76.2 min
+  [506_ida_v2] 90 execs | completas 0/90 | melhor cov15=54%
+  [121/198] 117.2 min | ETA 74.6 min
+  [506_ida_v5] 90 execs | completas 28/90 | melhor cov15=81%
+  [122/198] 117.5 min | ETA 73.2 min
+  [506_ida_v10] 90 execs | completas 43/90 | melhor cov15=90%
+  [123/198] 118.0 min | ETA 71.9 min
+  [658_ida_v100] 90 execs | completas 85/90 | melhor cov15=98%
+  [124/198] 118.0 min | ETA 70.4 min
+  [506_ida_v20] 90 execs | completas 40/90 | melhor cov15=93%
+  [125/198] 119.0 min | ETA 69.5 min
+  [658_volta_v50] 90 execs | completas 88/90 | melhor cov15=99%
+  [126/198] 120.2 min | ETA 68.7 min
+  [658_ida_v500] 90 execs | completas 37/90 | melhor cov15=98%
+  [127/198] 120.7 min | ETA 67.5 min
+  [658_ida_v200] 90 execs | completas 88/90 | melhor cov15=98%
+  [128/198] 120.9 min | ETA 66.1 min
+  [506_volta_v1] 90 execs | completas 0/90 | melhor cov15=66%
+  [129/198] 121.0 min | ETA 64.7 min
+  [506_volta_v2] 90 execs | completas 0/90 | melhor cov15=82%
+  [130/198] 121.1 min | ETA 63.3 min
+  [506_volta_v5] 90 execs | completas 2/90 | melhor cov15=82%
+  [131/198] 121.3 min | ETA 62.0 min
+  [506_ida_v50] 90 execs | completas 84/90 | melhor cov15=96%
+  [132/198] 121.3 min | ETA 60.6 min
+  [506_volta_v10] 90 execs | completas 25/90 | melhor cov15=91%
+  [133/198] 122.0 min | ETA 59.6 min
+  [658_volta_v100] 90 execs | completas 90/90 | melhor cov15=99%
+  [134/198] 122.2 min | ETA 58.4 min
+  [506_volta_v20] 90 execs | completas 80/90 | melhor cov15=96%
+  [135/198] 122.6 min | ETA 57.2 min
+  [658_volta_v200] 90 execs | completas 90/90 | melhor cov15=99%
+  [136/198] 123.6 min | ETA 56.4 min
+  [658_volta_v500] 90 execs | completas 90/90 | melhor cov15=99%
+  [137/198] 124.7 min | ETA 55.5 min
+  [505_ida_v1] 90 execs | completas 16/90 | melhor cov15=39%
+  [138/198] 124.7 min | ETA 54.2 min
+  [505_ida_v2] 90 execs | completas 0/90 | melhor cov15=60%
+  [139/198] 124.8 min | ETA 53.0 min
+  [505_ida_v5] 90 execs | completas 20/90 | melhor cov15=81%
+  [140/198] 125.1 min | ETA 51.8 min
+  [505_ida_v10] 90 execs | completas 42/90 | melhor cov15=87%
+  [141/198] 125.7 min | ETA 50.8 min
+  [506_volta_v50] 90 execs | completas 85/90 | melhor cov15=98%
+  [142/198] 125.8 min | ETA 49.6 min
+  [506_ida_v100] 90 execs | completas 87/90 | melhor cov15=96%
+  [143/198] 126.2 min | ETA 48.6 min
+  [505_ida_v20] 90 execs | completas 55/90 | melhor cov15=92%
+  [144/198] 126.9 min | ETA 47.6 min
+  [505_ida_v50] 90 execs | completas 66/90 | melhor cov15=96%
+  [145/198] 128.6 min | ETA 47.0 min
+  [506_volta_v100] 90 execs | completas 89/90 | melhor cov15=97%
+  [146/198] 129.6 min | ETA 46.1 min
+  [505_volta_v1] 90 execs | completas 8/90 | melhor cov15=84%
+  [147/198] 129.6 min | ETA 45.0 min
+  [506_ida_v200] 90 execs | completas 90/90 | melhor cov15=97%
+  [148/198] 129.6 min | ETA 43.8 min
+  [505_volta_v2] 90 execs | completas 63/90 | melhor cov15=94%
+  [149/198] 129.7 min | ETA 42.7 min
+  [505_volta_v5] 90 execs | completas 82/90 | melhor cov15=98%
+  [150/198] 129.9 min | ETA 41.6 min
+  [505_volta_v10] 90 execs | completas 81/90 | melhor cov15=99%
+  [151/198] 130.2 min | ETA 40.5 min
+  [505_volta_v20] 90 execs | completas 89/90 | melhor cov15=99%
+  [152/198] 131.1 min | ETA 39.7 min
+  [506_ida_v500] 90 execs | completas 90/90 | melhor cov15=97%
+  [153/198] 131.2 min | ETA 38.6 min
+  [505_ida_v100] 90 execs | completas 77/90 | melhor cov15=96%
+  [154/198] 131.9 min | ETA 37.7 min
+  [506_volta_v200] 90 execs | completas 90/90 | melhor cov15=97%
+  [155/198] 132.1 min | ETA 36.7 min
+  [307_ida_v1] 90 execs | completas 1/90 | melhor cov15=55%
+  [156/198] 132.2 min | ETA 35.6 min
+  [307_ida_v2] 90 execs | completas 1/90 | melhor cov15=66%
+  [157/198] 132.2 min | ETA 34.5 min
+  [307_ida_v5] 90 execs | completas 2/90 | melhor cov15=87%
+  [158/198] 132.5 min | ETA 33.5 min
+  [307_ida_v10] 90 execs | completas 39/90 | melhor cov15=91%
+  [159/198] 133.1 min | ETA 32.7 min
+  [505_volta_v50] 90 execs | completas 86/90 | melhor cov15=100%
+  [160/198] 133.2 min | ETA 31.6 min
+  [505_ida_v200] 90 execs | completas 90/90 | melhor cov15=95%
+  [161/198] 134.0 min | ETA 30.8 min
+  [307_ida_v20] 90 execs | completas 53/90 | melhor cov15=95%
+  [162/198] 134.6 min | ETA 29.9 min
+  [506_volta_v500] 90 execs | completas 35/90 | melhor cov15=98%
+  [163/198] 134.7 min | ETA 28.9 min
+  [505_ida_v500] 90 execs | completas 90/90 | melhor cov15=95%
+  [164/198] 136.7 min | ETA 28.3 min
+  [307_volta_v1] 90 execs | completas 8/90 | melhor cov15=64%
+  [165/198] 136.8 min | ETA 27.4 min
+  [307_volta_v2] 90 execs | completas 0/90 | melhor cov15=79%
+  [166/198] 136.8 min | ETA 26.4 min
+  [307_volta_v5] 90 execs | completas 11/90 | melhor cov15=94%
+  [167/198] 137.2 min | ETA 25.5 min
+  [505_volta_v100] 90 execs | completas 87/90 | melhor cov15=100%
+  [168/198] 137.4 min | ETA 24.5 min
+  [307_ida_v50] 90 execs | completas 85/90 | melhor cov15=94%
+  [169/198] 137.5 min | ETA 23.6 min
+  [307_volta_v10] 90 execs | completas 25/90 | melhor cov15=97%
+  [170/198] 138.0 min | ETA 22.7 min
+  [307_volta_v20] 90 execs | completas 53/90 | melhor cov15=99%
+  [171/198] 139.1 min | ETA 22.0 min
+  [505_volta_v200] 90 execs | completas 89/90 | melhor cov15=99%
+  [172/198] 139.3 min | ETA 21.1 min
+  [505_volta_v500] 90 execs | completas 90/90 | melhor cov15=99%
+  [173/198] 141.3 min | ETA 20.4 min
+  [607_ida_v1] 90 execs | completas 0/90 | melhor cov15=56%
+  [174/198] 141.4 min | ETA 19.5 min
+  [607_ida_v2] 90 execs | completas 0/90 | melhor cov15=58%
+  [175/198] 141.5 min | ETA 18.6 min
+  [607_ida_v5] 90 execs | completas 4/90 | melhor cov15=78%
+  [176/198] 141.9 min | ETA 17.7 min
+  [307_volta_v50] 90 execs | completas 81/90 | melhor cov15=99%
+  [177/198] 142.0 min | ETA 16.8 min
+  [307_ida_v100] 90 execs | completas 86/90 | melhor cov15=91%
+  [178/198] 142.4 min | ETA 16.0 min
+  [607_ida_v10] 90 execs | completas 58/90 | melhor cov15=87%
+  [179/198] 143.0 min | ETA 15.2 min
+  [307_ida_v200] 90 execs | completas 85/90 | melhor cov15=90%
+  [180/198] 144.6 min | ETA 14.5 min
+  [607_ida_v20] 90 execs | completas 78/90 | melhor cov15=84%
+  [181/198] 144.7 min | ETA 13.6 min
+  [307_ida_v500] 90 execs | completas 87/90 | melhor cov15=92%
+  [182/198] 146.1 min | ETA 12.8 min
+  [607_volta_v1] 90 execs | completas 2/90 | melhor cov15=66%
+  [183/198] 146.1 min | ETA 12.0 min
+  [607_volta_v2] 90 execs | completas 4/90 | melhor cov15=68%
+  [184/198] 146.3 min | ETA 11.1 min
+  [307_volta_v100] 90 execs | completas 87/90 | melhor cov15=99%
+  [185/198] 146.7 min | ETA 10.3 min
+  [607_volta_v5] 90 execs | completas 32/90 | melhor cov15=73%
+  [186/198] 146.8 min | ETA 9.5 min
+  [607_volta_v10] 90 execs | completas 62/90 | melhor cov15=80%
+  [187/198] 147.8 min | ETA 8.7 min
+  [307_volta_v200] 90 execs | completas 90/90 | melhor cov15=98%
+  [188/198] 149.4 min | ETA 7.9 min
+  [607_volta_v20] 90 execs | completas 83/90 | melhor cov15=82%
+  [189/198] 149.6 min | ETA 7.1 min
+  [307_volta_v500] 90 execs | completas 90/90 | melhor cov15=99%
+  [190/198] 150.4 min | ETA 6.3 min
+  [607_ida_v50] 90 execs | completas 87/90 | melhor cov15=85%
+  [191/198] 151.5 min | ETA 5.6 min
+  [607_volta_v50] 90 execs | completas 88/90 | melhor cov15=82%
+  [192/198] 155.7 min | ETA 4.9 min
+  [607_ida_v100] 90 execs | completas 86/90 | melhor cov15=84%
+  [193/198] 155.9 min | ETA 4.0 min
+  [607_ida_v500] 90 execs | completas 83/90 | melhor cov15=83%
+  [194/198] 158.6 min | ETA 3.3 min
+  [607_ida_v200] 90 execs | completas 85/90 | melhor cov15=83%
+  [195/198] 158.6 min | ETA 2.4 min
+  [607_volta_v100] 90 execs | completas 89/90 | melhor cov15=81%
+  [196/198] 159.1 min | ETA 1.6 min
+  [607_volta_v200] 90 execs | completas 89/90 | melhor cov15=81%
+  [197/198] 160.0 min | ETA 0.8 min
+  [607_volta_v500] 90 execs | completas 87/90 | melhor cov15=82%
+  [198/198] 160.1 min | ETA 0.0 min
+
+==================================================================
+Concluído: 17,820 execuções em 160.1 min
+Completas: 12,136 (68.1%)
+Sumário: /Users/pedrorebollo/projetos/traje_disc/experimento_v10_refino/outputs/experiment_summary.csv
+Rotas:   /Users/pedrorebollo/projetos/traje_disc/experimento_v10_refino/outputs/rotas (parquet, uma por item)
+==================================================================

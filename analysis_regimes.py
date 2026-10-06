@@ -229,13 +229,13 @@ def rg_04(sm, out):
             ax.annotate(r["cfg"], (r["frac_far"], r["v_rich"]), fontsize=5.8,
                         xytext=(3, -6), textcoords="offset points")
     ax.axhline(90, ls=":", color="#888", lw=0.9)
-    ax.set_xlabel("pings a > 100 m do shape oficial (no regime rico, %)")
+    ax.set_xlabel("amostras de GPS a > 100 m do shape oficial (no regime rico, %)")
     ax.set_ylabel("aderência mediana \u2264 15 m (500 viagens) (%)")
     z = np.polyfit(s["frac_far"], s["v_rich"], 1)
     xs = np.linspace(0, s["frac_far"].max() * 1.05, 20)
     ax.plot(xs, np.polyval(z, xs), "--", color="#666", lw=1.0,
             label="tendência")
-    ax.set_title("Quando parte dos pings não segue o shape oficial,\n"
+    ax.set_title("Quando parte dos amostras de GPS não segue o shape oficial,\n"
                  "a aderência fica presa abaixo de 100%", fontsize=8.5)
     _clean(ax)
     ax.legend(fontsize=6.3, frameon=False, loc="lower left")
@@ -284,7 +284,7 @@ def rg_06(out):
         ("658_volta", "Funciona (dados baratos): 96,8% com 10 viagens"),
         ("603_ida", "Funciona já com 1 viagem: 94,3%"),
         ("505_volta", "Precisa de dados: 4% (1 viagem) → 97,4% (500)"),
-        ("607_ida", "Limitada pelo shape: 19% dos pings fora do shape"),
+        ("607_ida", "Limitada pelo shape: 19% dos amostras de GPS fora do shape"),
     ]
     fig, axes = plt.subplots(2, 2, figsize=(7.16, 7.0),
                              constrained_layout=True)

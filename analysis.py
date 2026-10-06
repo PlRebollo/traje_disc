@@ -15,7 +15,7 @@ Figuras (outputs/analysis/):
 - fig_11: compressão de pontos
 
 Por linha: per_line/ (sensitivity + trip_effect) e mapas.
-Tabela: best_configs_v9.csv
+Tabela: best_configs_v10.csv
 
 Uso:
     cd experimento_v8
@@ -464,7 +464,7 @@ def make_fig_11(df, out_dir):
     ax.set_xlabel("pontos GPS de entrada (log)")
     ax.set_ylabel("pontos da rota gerada (log)")
     ax.set_title("Compressão: a rota usa poucos pontos para\n"
-                 "representar dezenas de milhares de pings", fontsize=8.5)
+                 "representar dezenas de milhares de amostras de GPS", fontsize=8.5)
     _clean(ax)
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(handles, labels, loc="outside right center", fontsize=6.0,
@@ -504,8 +504,8 @@ def save_best_configs(df, out_dir):
             "run_id": r["run_id"],
         })
     out = pd.DataFrame(rows).sort_values(["linha", "sentido", "n_trips"])
-    out.to_csv(out_dir / "best_configs_v9.csv", index=False)
-    print(f"[tabela] best_configs_v9.csv ({len(out)} configs)")
+    out.to_csv(out_dir / "best_configs_v10.csv", index=False)
+    print(f"[tabela] best_configs_v10.csv ({len(out)} configs)")
     return out
 
 

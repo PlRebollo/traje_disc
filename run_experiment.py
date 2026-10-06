@@ -55,6 +55,7 @@ def _discover(st, min_m, max_m, samples, inc):
         loop_min_steps=cfg.LOOP_MIN_STEPS,
         arrival_radius_m=cfg.ARRIVAL_RADIUS_M,
         consecutive_fail_stop=cfg.CONSECUTIVE_FAIL_STOP,
+        dist_floor=cfg.DIST_FLOOR,
         smooth_iterations=cfg.SMOOTH_ITERATIONS,
     )
 
@@ -79,7 +80,7 @@ def _save_best_png(route, gps, shape_model, path, meta, row):
         f"{meta['linha']}/{meta['sentido']} · {meta['n_trips']} viagens | "
         f"N={int(row['angular_samples'])} r={float(row['meters']):g} "
         f"G={float(row['increase_meters']):g} | "
-        f"cov15={100 * row['coverage_15m']:.0f}%",
+        f"cov15={row['coverage_15m']:.0f}%",
         fontsize=7.5)
     ax.set_xticks([])
     ax.set_yticks([])
@@ -182,8 +183,8 @@ def run_work(wid):
         print(f"  [aviso] melhor {tag}: {exc}", flush=True)
 
     done = sum(1 for r_ in rows if r_["completed"])
-    print(f"  [{tag}] {len(rows)} execs | completas {done}/150 | "
-          f"melhor cov15={100 * max((r_['coverage_15m'] for r_ in rows), default=np.nan):.0f}%",
+    print(f"  [{tag}] {len(rows)} execs | completas {done}/{len(rows)} | "
+          f"melhor cov15={max((r_['coverage_15m'] for r_ in rows), default=np.nan):.0f}%",
           flush=True)
     return rows
 
@@ -261,7 +262,7 @@ def build_state(shape_models, configs, df_pl, trip_summary):
                           n_input_points=len(gps)),
             )
             print(f"  [{wid}] {linha}/{sentido} v{N}: {eff}/{n_avail} viagens | "
-                  f"{sel_n['veiculo'].nunique()} veic | {len(gps):,} pings",
+                  f"{sel_n['veiculo'].nunique()} veic | {len(gps):,} amostras de GPS",
                   flush=True)
     return state
 
@@ -304,10 +305,16 @@ def main():
             tmap[linha].append(tuple(st))
             if en is not None:
                 tmap[linha].append(tuple(en))
-    df_pl = load_gps_data(cfg.PATH_POSITIONS, linhas=cfg.LINHAS,
-                          split_terminals=tmap)
-    trip_summary = build_trip_summary(df_pl)
-    print(f"Pings: {df_pl.height:,} | trips válidas: {len(trip_summary):,}")
+    speed = cfg.MAX_SPEED_KMH if getattr(cfg, "USE_SPEED_FILTER", False) else None
+    df_pl = load_gps_data(
+        cfg.PATH_POSITIONS, linhas=cfg.LINHAS, split_terminals=tmap,
+        max_gap_s=cfg.MAX_GAP_S, max_speed_kmh=speed, min_dt_s=cfg.MIN_DT_S,
+        terminal_near_m=cfg.TERMINAL_NEAR_M, terminal_far_m=cfg.TERMINAL_FAR_M,
+    )
+    trip_summary = build_trip_summary(df_pl,
+                                      min_trip_points=cfg.MIN_TRIP_POINTS)
+    print(f"Amostras de GPS: {df_pl.height:,} | trips válidas: "
+          f"{len(trip_summary):,}")
 
     print("\nMontando itens de trabalho (por nº de viagens)...")
     state = build_state(shape_models, configs, df_pl, trip_summary)
